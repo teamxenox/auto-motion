@@ -131,8 +131,12 @@ class CommandCook(
     }
 
 
-    private fun concatWithoutIntroVideos(videoAudioIds: List<String>) {
+    private fun concatWithoutIntroVideos(videoAudioIds: MutableList<String>) {
         // Concat without intro video
+        if (videoAudioIds.isEmpty()) {
+            videoAudioIds.add("[0:v][0:a]")
+        }
+
         for (vaIds in videoAudioIds) {
             sb.append(vaIds)
         }
@@ -186,7 +190,7 @@ class CommandCook(
 
     }
 
-    private fun addTimelapse(): List<String> {
+    private fun addTimelapse(): MutableList<String> {
 
         // Looping through timelapses and trimming video
         val timelapses = subtitleReport.timelapses

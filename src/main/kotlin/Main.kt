@@ -131,7 +131,7 @@ object Main {
                 )
                 println("✔️ Commands executed")
                 println("\uD83C\uDF89 File saved to ${commandCook.outputFileName}")
-                commandSh.delete()
+                //commandSh.delete()
 
                 exitProcess(0)
 
