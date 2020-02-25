@@ -1,0 +1,1 @@
+wget "https://github.com/theapache64/auto-motion/archive/master.zip"
