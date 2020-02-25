@@ -98,12 +98,19 @@ object Main {
                 val command = commandCook.prepareCommand()
                 println("✔️ Commands prepared")
                 println("↪ No of timelapses: ${subReport.timelapses.size}")
+                if (subReport.timelapses.isNotEmpty()) {
+                    println("↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️")
+                }
                 for (timelapse in subReport.timelapses) {
+                    val duration = DateTimeUtils.getTimeFormatted(timelapse.end - timelapse.start)
                     println(
                         "\uD83D\uDD5B [${DateTimeUtils.getTimeFormatted(timelapse.start)} - ${DateTimeUtils.getTimeFormatted(
                             timelapse.end
-                        )}] \uD83D\uDC41️ ${timelapse.targetDuration.toInt()}sec"
+                        )}] \uD83C\uDFA5 $duration \uD83D\uDC41️ ${timelapse.targetDuration.toInt()}sec"
                     )
+                }
+                if (subReport.timelapses.isNotEmpty()) {
+                    println("↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️")
                 }
 
                 val commandSh = File("${inputVideo.name}.sh")
@@ -115,8 +122,8 @@ object Main {
                 ComplexCommandExecutor.executeCommand(
                     "sh \"${commandSh.absolutePath}\"",
                     true,
-                    { line -> true },
-                    { line -> false },
+                    { true },
+                    { false },
                     isSuppressError = true,
                     isReturnAll = true,
                     prefix = "\uD83D\uDCBF ",
