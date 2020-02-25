@@ -1,6 +1,7 @@
 package com.theapache64.automotion.core
 
 import com.theapache64.automotion.utils.DateTimeUtils
+import com.theapache64.automotion.utils.JarUtils
 import org.apache.commons.cli.*
 import java.io.File
 import java.util.*
@@ -80,7 +81,7 @@ class CommandParser(
         const val DEFAULT_MIN_TIMELAPSE_SRC_LENGTH = DEFAULT_MIN_TIMESTAMP_LENGTH / DEFAULT_TIMELAPSE_SPEED
         private const val DEFAULT_INTRO_DURATION = 5
         private const val DEFAULT_CREDITS_DURATION = 5
-        private const val DEFAULT_FONT = "lab/komikax.ttf"
+        private val DEFAULT_FONT = "${JarUtils.getJarDir()}lab/komikax.ttf"
         private const val DEFAULT_WATERMARK_COLOR = "white"
         private const val DEFAULT_WATERMARK_FONT_SIZE = 24
         private const val DEFAULT_WATERMARK_BG_COLOR = "black"
@@ -96,7 +97,7 @@ class CommandParser(
         private val DEFAULT_CREDITS_TITLE = currentUserName
         private const val DEFAULT_CREDITS_SUB_TITLE = "Thank You!"
         private val DEFAULT_INTRO_SUB_TITLE = DateTimeUtils.getDateFormatted(Date())
-        private const val DEFAULT_BGM = "lab/lost_in_time.mp3"
+        private val DEFAULT_BGM = "${JarUtils.getJarDir()}lab/lost_in_time.mp3"
 
 
         private val options: Options = Options()
@@ -258,13 +259,17 @@ class CommandParser(
      * To print help text
      */
     fun printHelp() {
-        HelpFormatter().printHelp(
-            "auto-motion -v input.mp4 -bgm 'bgm1.mp3, bgm2.mp3' -t 'theapache64' ",
-            "A tool to edit your lengthy screen records, automatically. ",
-            options,
-            "enjoy! - theapache64",
-            true
-        )
+        HelpFormatter()
+            .apply {
+                optionComparator = null
+            }
+            .printHelp(
+                "auto-motion -v input.mp4 -bgm 'bgm1.mp3, bgm2.mp3' -t 'theapache64' ",
+                "A tool to edit your lengthy screen records, automatically. ",
+                options,
+                "enjoy! - theapache64",
+                true
+            )
     }
 
     fun getInputVideo(): File {

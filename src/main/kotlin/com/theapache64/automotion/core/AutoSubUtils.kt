@@ -38,7 +38,9 @@ object AutoSubUtils {
         val jsonSubFile = parseFile(autoSubOutput)
         require(jsonSubFile.exists()) { "JSON subtitle file doesn't exist ${jsonSubFile.absolutePath}" }
         val videoDuration = FileUtils.getDuration(videoFile)
-        return parseJson(jsonSubFile, videoDuration)
+        val parsedData = parseJson(jsonSubFile, videoDuration)
+        jsonSubFile.delete()
+        return parsedData
     }
 
     /**

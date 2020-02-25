@@ -33,13 +33,16 @@ object ComplexCommandExecutor {
         val cmd = CommandBuilder(command)
             .build()
 
+        var lastPrintedLineLength = 0
         val eop = ExecutionOutputPrinter(object : Appender {
             override fun appendStdText(text: String) {
+                lastPrintedLineLength = text.length
                 checkAndPrint(isLivePrint, isSameLinePrint, isNoPrint, text, prefix)
                 result.add(text)
             }
 
             override fun appendErrText(text: String) {
+                lastPrintedLineLength = text.length
                 checkAndPrint(isLivePrint, isSameLinePrint, isNoPrint, text, prefix)
                 error.append(text).append("\n")
             }
@@ -67,8 +70,7 @@ object ComplexCommandExecutor {
         }
 
         if (isClearAfterFinish) {
-            print("\r")
-            println()
+            print("${SpacePrinter.getSpace(lastPrintedLineLength + 2)}\r")
         }
 
         return result

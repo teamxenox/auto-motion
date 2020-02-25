@@ -12,7 +12,8 @@ object FileUtils {
      * To get duration of a media file in seconds
      */
     fun getDuration(file: File): Double {
-        val command = "ffprobe -i \"${file.absolutePath}\" -show_entries format=duration -v quiet -of csv=\"p=0\""
+        val command =
+            "ffprobe -i \"${file.absolutePath}\" -show_entries format=duration -v quiet -of csv=\"p=0\""
         val output =
             SimpleCommandExecutor.executeCommand(command)
         return output.toDouble()

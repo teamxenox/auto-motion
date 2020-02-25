@@ -2,6 +2,7 @@ package com.theapache64.automotion.core
 
 import com.theapache64.automotion.utils.InputUtils
 import com.theapache64.automotion.utils.DateTimeUtils
+import com.theapache64.automotion.utils.JarUtils
 import java.io.File
 
 /**
@@ -38,7 +39,7 @@ class BgmAgent(
             println("❗ Remaining BGM needed : ${DateTimeUtils.getTimeFormatted(remBgDur)}")
 
             val filePath = if (isFromTest) {
-                "lab/lost_in_time.mp3"
+                "${JarUtils.getJarDir()}lab/lost_in_time.mp3"
             } else {
                 InputUtils.getString("↪ Enter remaining BGM path", true)
             }
