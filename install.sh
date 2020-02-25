@@ -1,4 +1,6 @@
 echo "⚙️ Installing..." &&
+pip install --user ffpb &&
+pip install autosub &&
 wget "https://github.com/theapache64/auto-motion/archive/master.zip" -q --show-progress &&
 unzip master.zip &&
 mv auto-motion-master auto-motion &&
