@@ -79,8 +79,8 @@ class CommandParser(
         private const val DEFAULT_MIN_TIMESTAMP_LENGTH = 2
         const val DEFAULT_TIMELAPSE_SPEED = 0.25f
         const val DEFAULT_MIN_TIMELAPSE_SRC_LENGTH = DEFAULT_MIN_TIMESTAMP_LENGTH / DEFAULT_TIMELAPSE_SPEED
-        private const val DEFAULT_INTRO_DURATION = 5
-        private const val DEFAULT_CREDITS_DURATION = 5
+        private const val DEFAULT_INTRO_DURATION = 3
+        private const val DEFAULT_CREDITS_DURATION = 2
         private val DEFAULT_FONT = "${JarUtils.getJarDir()}lab/komikax.ttf"
         private const val DEFAULT_WATERMARK_COLOR = "white"
         private const val DEFAULT_WATERMARK_FONT_SIZE = 24
