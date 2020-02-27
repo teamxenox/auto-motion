@@ -11,6 +11,7 @@ class AudioMerger(private val bgmFiles: List<File>) {
     }
 
     fun merge(): File {
+
         println("merging...")
         val firstFile = bgmFiles.first()
         val outputFile = File("${firstFile.parent}/merged.${firstFile.extension}")

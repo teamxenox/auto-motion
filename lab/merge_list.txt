@@ -1,0 +1,2 @@
+file '/home/theapache64/Documents/projects/auto-motion/lab/lion_big.mp4'
+file '/home/theapache64/Documents/projects/auto-motion/lab/shar.mp4'

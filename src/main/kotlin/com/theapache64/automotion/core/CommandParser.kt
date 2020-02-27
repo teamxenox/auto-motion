@@ -24,8 +24,6 @@ class CommandParser(
         private const val OPT_BGM = "bgm"
         private const val OPT_BGM_LONG = "background-music"
 
-        private const val OPT_TITLE = "t"
-        private const val OPT_TITLE_LONG = "title"
         private const val OPT_SUB_TITLE = "st"
         private const val OPT_SUB_TITLE_LONG = "sub-title"
         private const val OPT_VIDEO_LANG = "vl"
@@ -94,29 +92,28 @@ class CommandParser(
         private val currentUserName = System.getProperty("user.name");
         private val DEFAULT_WATERMARK = currentUserName
         private val DEFAULT_INTRO_TITLE = currentUserName
-        private val DEFAULT_CREDITS_TITLE = currentUserName
-        private const val DEFAULT_CREDITS_SUB_TITLE = "Thank You!"
+        private const val DEFAULT_CREDITS_TITLE = "Thank You!"
+        private val DEFAULT_CREDITS_SUB_TITLE = currentUserName
         private val DEFAULT_INTRO_SUB_TITLE = DateTimeUtils.getDateFormatted(Date())
         private val DEFAULT_BGM = "${JarUtils.getJarDir()}lab/lost_in_time.mp3"
 
 
         private val options: Options = Options()
             .addOption(OPT_HELP, OPT_HELP_LONG, false, "To print help text")
-            .addRequiredOption(OPT_INPUT_VIDEO, OPT_INPUT_VIDEO_LONG, true, "Video input (required)")
+            .addRequiredOption(OPT_INPUT_VIDEO, OPT_INPUT_VIDEO_LONG, true, "Video inputs (required at least one)")
             .addOption(
                 OPT_BGM,
                 OPT_BGM_LONG,
                 true,
-                "Background music for timelapse (comma-separated, required)"
+                "Background music for timelapse. Default '${DEFAULT_BGM}'"
             )
-            .addOption(OPT_TITLE, OPT_TITLE_LONG, true, "Intro title (required)")
-            .addOption(OPT_SUB_TITLE, OPT_SUB_TITLE_LONG, true, "Intro subtitle (required)")
+            .addOption(OPT_SUB_TITLE, OPT_SUB_TITLE_LONG, true, "Intro sub title")
             .addOption(
                 Option(
                     OPT_VIDEO_LANG,
                     OPT_VIDEO_LANG_LONG,
                     true,
-                    "Video language, default $DEFAULT_LANGUAGE"
+                    "Video language. Default '$DEFAULT_LANGUAGE'"
                 )
             )
             .addOption(
@@ -124,7 +121,7 @@ class CommandParser(
                     OPT_MIN_TL_SRC_LEN,
                     OPT_MIN_TL_SRC_LEN_LONG,
                     true,
-                    "Minimum timelapse source length (in seconds)"
+                    "Minimum timelapse source length (in seconds). Default '${DEFAULT_MIN_TIMESTAMP_LENGTH}'"
                 )
             )
             .addOption(
@@ -132,7 +129,7 @@ class CommandParser(
                     OPT_TIMELAPSE_SPEED,
                     OPT_TIMELAPSE_SPEED_LONG,
                     true,
-                    "Timelapse speed (must be < 1). 0.5 = 2x speed, 0.25 = 4x"
+                    "Timelapse speed (must be < 1). 0.5 = 2x speed, 0.25 = 4x. Default '${DEFAULT_TIMELAPSE_SPEED}'"
                 )
             )
             .addOption(
@@ -140,7 +137,7 @@ class CommandParser(
                     OPT_INTRO_DURATION,
                     OPT_INTRO_DURATION_LONG,
                     true,
-                    "Intro duration (in seconds)"
+                    "Intro duration (in seconds). Default '${DEFAULT_INTRO_DURATION}'"
                 )
             )
             .addOption(
@@ -148,104 +145,109 @@ class CommandParser(
                     OPT_CREDITS_DURATION,
                     OPT_CREDITS_DURATION_LONG,
                     true,
-                    "Credits duration (in seconds)"
+                    "Credits duration (in seconds). Default '${DEFAULT_CREDITS_DURATION}'"
                 )
             )
             .addOption(
                 OPT_WATERMARK,
                 OPT_WATERMARK_LONG,
                 true,
-                "Watermark text. Default = logged in username"
+                "Watermark text. Default ($DEFAULT_INTRO_TITLE) (active username)"
             )
             .addOption(
                 OPT_INTRO_TITLE,
                 OPT_INTRO_TITLE_LONG,
                 true,
-                "Intro title"
+                "Intro title. Default ($DEFAULT_INTRO_TITLE) (active username)"
             )
             .addOption(
                 OPT_CREDITS_TITLE,
                 OPT_CREDITS_TITLE_LONG,
                 true,
-                "Credits title"
+                "Credits title. Default '${DEFAULT_CREDITS_TITLE}'"
             )
             .addOption(
                 OPT_INTRO_SUB_TITLE,
                 OPT_INTRO_SUB_TITLE_LONG,
                 true,
-                "Intro sub title"
+                "Intro sub title. Default '${DEFAULT_INTRO_SUB_TITLE}' (current date)"
             )
             .addOption(
                 OPT_CREDITS_SUB_TITLE,
                 OPT_CREDITS_SUB_TITLE_LONG,
                 true,
-                "Credits sub title"
+                "Credits sub title. Default ($DEFAULT_INTRO_TITLE) (active username)"
             )
             .addOption(
                 OPT_FONT,
                 OPT_FONT_LONG,
                 true,
-                "Font file path"
+                "Font file path. Default '${DEFAULT_FONT}'"
             )
             .addOption(
                 OPT_HIGHLIGHT,
                 OPT_HIGHLIGHT_LONG,
                 true,
-                "Highlight of the video. HH:mm:ss-ss format (from- to seconds)"
+                """
+                    Highlight of the video. Format 'HH:mm:ss-ss' (from- to seconds).
+                    Eg:
+                    auto-motion -v input.mp4 -${OPT_HIGHLIGHT} '00:01:00-5'
+                    Will highlight 5 seconds of clip from 00:01:00
+                """.trimIndent()
             )
             .addOption(
                 OPT_WATERMARK_COLOR,
                 OPT_WATERMARK_TEXT_COLOR_LONG,
                 true,
-                "Watermark text color. Default $DEFAULT_WATERMARK_COLOR"
+                "Watermark text color. Default '$DEFAULT_WATERMARK_COLOR'"
             )
             .addOption(
                 OPT_WATERMARK_FONT_SIZE,
                 OPT_WATERMARK_FONT_SIZE_LONG,
                 true,
-                "Watermark text size. Default $DEFAULT_WATERMARK_FONT_SIZE"
+                "Watermark text size. Default '$DEFAULT_WATERMARK_FONT_SIZE'"
             )
             .addOption(
                 OPT_WATERMARK_BG_COLOR,
                 OPT_WATERMARK_BG_COLOR_LONG,
                 true,
-                "Watermark background color. Default $DEFAULT_WATERMARK_BG_COLOR"
+                "Watermark background color. Default '$DEFAULT_WATERMARK_BG_COLOR'"
             )
             .addOption(
                 OPT_WATERMARK_BG_OPACITY,
                 OPT_WATERMARK_BG_OPACITY_LONG,
                 true,
-                "Watermark background opacity. Default $DEFAULT_WATERMARK_BG_OPACITY"
+                "Watermark background opacity. Default '$DEFAULT_WATERMARK_BG_OPACITY'"
             )
             .addOption(
                 OPT_TITLE_FONT_SIZE,
                 OPT_TITLE_FONT_SIZE_LONG,
                 true,
-                "Title font size. Default $DEFAULT_TITLE_FONT_SIZE"
+                "Title font size. Default '$DEFAULT_TITLE_FONT_SIZE'"
             )
             .addOption(
                 OPT_SUB_TITLE_FONT_SIZE,
                 OPT_SUB_TITLE_FONT_SIZE_LONG,
                 true,
-                "Sub-title font size. Default $DEFAULT_SUB_TITLE_FONT_SIZE"
+                "Sub title font size. Default '$DEFAULT_SUB_TITLE_FONT_SIZE'"
             )
             .addOption(
                 OPT_TITLE_COLOR,
                 OPT_TITLE_COLOR_LONG,
                 true,
-                "Title color. Default $DEFAULT_TITLE_COLOR"
+                "Title color. Default '$DEFAULT_TITLE_COLOR'"
             )
             .addOption(
                 OPT_SUB_TITLE_COLOR,
                 OPT_SUB_TITLE_COLOR_LONG,
                 true,
-                "Sub title color. Default $DEFAULT_SUB_TITLE_COLOR"
+                "Sub title color. Default '$DEFAULT_SUB_TITLE_COLOR'"
             )
             .addOption(
                 OPT_BG_COLOR,
                 OPT_BG_COLOR_LONG,
                 true,
-                "Background color. Default $DEFAULT_BG_COLOR"
+                "Background color. Default '$DEFAULT_BG_COLOR'"
             )
     }
 
@@ -272,8 +274,13 @@ class CommandParser(
             )
     }
 
-    fun getInputVideo(): File {
-        return File(cli.getOptionValue(OPT_INPUT_VIDEO))
+    fun getInputVideos(): List<File> {
+        val inputFiles = cli.getOptionValues(OPT_INPUT_VIDEO)
+        return mutableListOf<File>().apply {
+            for (inputFilePath in inputFiles) {
+                add(File(inputFilePath))
+            }
+        }
     }
 
     fun getBgms(): List<File> {
@@ -303,7 +310,7 @@ class CommandParser(
             OPT_TIMELAPSE_SPEED,
             DEFAULT_TIMELAPSE_SPEED.toString()
         ).toFloat()
-        require(speed < 1) { "Timelapse speed must be less than 1" }
+        require(speed <= 1) { "Timelapse speed must be <= 1" }
         return speed
     }
 

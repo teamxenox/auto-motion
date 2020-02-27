@@ -18,7 +18,7 @@ object Main {
             } else {
 
                 // Reading input from console
-                val inputVideo = cp.getInputVideo()
+                val inputVideos = cp.getInputVideos()
                 val bgmFiles = cp.getBgms()
                 val minTimelapseSourceLength = cp.getMinTimelapseSourceLength()
                 val timelapseSpeed = cp.getTimelapseSpeed()
@@ -41,6 +41,16 @@ object Main {
                 val titleColor = cp.getTitleColor()
                 val subTitleColor = cp.getSubTitleColor()
                 val bgColor = cp.getBgColor()
+
+                // Checking if there's multiple videos
+                val inputVideo = if (inputVideos.size > 1) {
+                    println("\uD83C\uDF00 Merging video files...")
+                    val mergedVideo = VideoMerger.mergeVideo(inputVideos)
+                    println("✔️ Video merging finished")
+                    mergedVideo
+                } else {
+                    inputVideos.first()
+                }
 
                 // Downloading subtitles
                 println("\uD83D\uDD0A Analyzing audio stream... ")
@@ -131,7 +141,7 @@ object Main {
                 )
                 println("✔️ Commands executed")
                 println("\uD83C\uDF89 File saved to ${commandCook.outputFileName}")
-                //commandSh.delete()
+                commandSh.delete()
 
                 exitProcess(0)
 

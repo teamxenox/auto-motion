@@ -9,7 +9,7 @@ class CommandParserTest {
     @Test
     fun testParserFail() {
         try {
-            CommandParser(arrayOf()).getInputVideo()
+            CommandParser(arrayOf()).getInputVideos()
             assert(false)
         } catch (e: MissingOptionException) {
             assert(true)
