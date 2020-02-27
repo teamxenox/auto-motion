@@ -12,5 +12,11 @@ A tool to automate video editing.
 wget "https://raw.githubusercontent.com/theapache64/auto-motion/master/install.sh" -q --show-progress -O install.sh && sh install.sh && source ~/.bash_aliases
 ```
 
+## Update
+
+```shell script
+wget "https://raw.githubusercontent.com/theapache64/auto-motion/master/update.sh" -q --show-progress -O update.sh && sh update.sh
+```
+
 ## Contributors
  - [theapache64](https://github.com/theapache64)
