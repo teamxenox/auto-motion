@@ -162,7 +162,7 @@ object Main {
     }
 
     private fun isAllDepsAvailable(): Boolean {
-        return isFFmpegOkay()
+        return DependencyChecker.isFFmpegOkay()
     }
 
 

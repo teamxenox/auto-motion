@@ -15,7 +15,7 @@ object SimpleCommandExecutor {
 
     @Throws(IOException::class)
     fun executeCommand(command: String, isLivePrint: Boolean): String =
-        executeCommands(arrayOf(command), isLivePrint, false, false).joinToString(separator = "\n")
+        executeCommands(arrayOf(command), isLivePrint, false, isReturnAll = false).joinToString(separator = "\n")
 
 
     @Throws(IOException::class)
