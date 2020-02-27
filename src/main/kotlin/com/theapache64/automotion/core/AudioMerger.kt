@@ -26,7 +26,7 @@ class AudioMerger(private val bgmFiles: List<File>) {
             isLivePrint = true,
             isSuppressError = true,
             isReturnAll = true,
-            isSameLinePrint = { line -> true },
+            isSameLinePrint = { true },
             isNoPrint = { line -> !line.contains("bitrate= ") },
             prefix = "\uD83C\uDF00 merging : "
         )

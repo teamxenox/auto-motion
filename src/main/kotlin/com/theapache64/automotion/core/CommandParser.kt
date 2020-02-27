@@ -2,6 +2,7 @@ package com.theapache64.automotion.core
 
 import com.theapache64.automotion.utils.DateTimeUtils
 import com.theapache64.automotion.utils.JarUtils
+import com.theapache64.automotion.utils.VersionUtils
 import org.apache.commons.cli.*
 import java.io.File
 import java.util.*
@@ -272,7 +273,7 @@ class CommandParser(
             }
             .printHelp(
                 "auto-motion -v input.mp4 -bgm 'bgm1.mp3, bgm2.mp3' -t 'theapache64' ",
-                "A tool to edit your lengthy screen records, automatically. ",
+                "A tool to edit your lengthy screen records, automatically. v${VersionUtils.getVersion()}",
                 options,
                 "enjoy! - theapache64",
                 true

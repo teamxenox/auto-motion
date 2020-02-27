@@ -141,7 +141,7 @@ merged.mp3
 
 !lab/lion.mp4
 !libs/system_command_executor.jar
-!auto-motion_v1.0.0-alpha01.jar
+!auto-motion.main.jar
 lab/*.sh
 lab/*.json
 !lab/command.sh
