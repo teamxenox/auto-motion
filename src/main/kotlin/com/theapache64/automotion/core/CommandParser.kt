@@ -69,7 +69,7 @@ class CommandParser(
         private const val OPT_SUB_TITLE_COLOR_LONG = "sub-title-color"
         private const val OPT_BG_COLOR = "bg"
         private const val OPT_BG_COLOR_LONG = "background-color"
-        private const val OPT_KEEP_SH = "keep-sh"
+        private const val OPT_KEEP_SH = "keepsh"
 
 
         /**
@@ -253,7 +253,7 @@ class CommandParser(
             )
             .addOption(
                 OPT_KEEP_SH,
-                "To keep final shell script file (developer-option)"
+                "To keep final shell script file (developer-option). Default false."
             )
     }
 
@@ -272,10 +272,10 @@ class CommandParser(
                 optionComparator = null
             }
             .printHelp(
-                "auto-motion -v input.mp4 -bgm 'bgm1.mp3, bgm2.mp3' -t 'theapache64' ",
-                "A tool to edit your lengthy screen records, automatically. v${VersionUtils.getVersion()}",
+                "auto-motion -v input.mp4",
+                "A tool to edit your lengthy screen records, automatically. Version : ${VersionUtils.getVersion()}",
                 options,
-                "enjoy! - theapache64",
+                "\uD83C\uDF8A Happy automate!",
                 true
             )
     }
