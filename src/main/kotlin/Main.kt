@@ -41,6 +41,7 @@ object Main {
                 val titleColor = cp.getTitleColor()
                 val subTitleColor = cp.getSubTitleColor()
                 val bgColor = cp.getBgColor()
+                val isKeepSh = cp.isKeepSh()
 
                 // Checking if there's multiple videos
                 val inputVideo = if (inputVideos.size > 1) {
@@ -141,7 +142,9 @@ object Main {
                 )
                 println("✔️ Commands executed")
                 println("\uD83C\uDF89 File saved to ${commandCook.outputFileName}")
-                commandSh.delete()
+                if (!isKeepSh) {
+                    commandSh.delete()
+                }
 
                 exitProcess(0)
 

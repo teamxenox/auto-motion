@@ -68,6 +68,7 @@ class CommandParser(
         private const val OPT_SUB_TITLE_COLOR_LONG = "sub-title-color"
         private const val OPT_BG_COLOR = "bg"
         private const val OPT_BG_COLOR_LONG = "background-color"
+        private const val OPT_KEEP_SH = "keep-sh"
 
 
         /**
@@ -248,6 +249,10 @@ class CommandParser(
                 OPT_BG_COLOR_LONG,
                 true,
                 "Background color. Default '$DEFAULT_BG_COLOR'"
+            )
+            .addOption(
+                OPT_KEEP_SH,
+                "To keep final shell script file (developer-option)"
             )
     }
 
@@ -442,5 +447,9 @@ class CommandParser(
             OPT_BG_COLOR,
             DEFAULT_BG_COLOR
         )
+    }
+
+    fun isKeepSh(): Boolean {
+        return cli.hasOption(OPT_KEEP_SH)
     }
 }
