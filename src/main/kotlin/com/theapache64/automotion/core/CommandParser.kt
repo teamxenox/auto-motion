@@ -324,7 +324,6 @@ class CommandParser(
             OPT_TIMELAPSE_SPEED,
             DEFAULT_TIMELAPSE_SPEED.toString()
         ).toFloat()
-        println("Timelapse speed is $speed")
         require(speed <= 1) { "Timelapse speed must be <= 1" }
         return speed
     }

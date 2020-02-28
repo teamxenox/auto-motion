@@ -28,22 +28,23 @@ class SubtitleAnalyzer(
             val secDiff = subNode.start - prevNode.end
 
             if (secDiff >= minTimelapseSourceLength) {
+
                 val targetDuration = secDiff * timelapseSpeed
                 totalTimelapseDuration += targetDuration
                 val sourceStart = prevNode.end
                 val targetStart = getTargetStart(subNodes, timelapses, sourceStart)
                 val targetEnd = targetStart + targetDuration
 
-                timelapses.add(
-                    Timelapse(
-                        sourceStart,
-                        sourceEnd = subNode.start,
-                        srcDuration = secDiff,
-                        targetDuration = targetDuration,
-                        targetStart = targetStart,
-                        targetEnd = targetEnd
-                    )
+                val timelapse = Timelapse(
+                    sourceStart,
+                    sourceEnd = subNode.start,
+                    srcDuration = secDiff,
+                    targetDuration = targetDuration,
+                    targetStart = targetStart,
+                    targetEnd = targetEnd
                 )
+
+                timelapses.add(timelapse)
             }
 
             prevNode = subNode

@@ -24,6 +24,7 @@ class SubtitleAnalyzerTest {
         timelapses.first().targetDuration.should.equal(5.toDouble())
     }
 
+
     @Test
     fun testTargetStartEndSuccess() {
         val jsonFile = File("lab/test_timelapse_target_start_end.json")
