@@ -9,7 +9,8 @@ import com.theapache64.automotion.models.Timelapse
  */
 class SubtitleAnalyzer(
     private val minTimelapseSourceLength: Double,
-    private val timelapseSpeed: Float
+    private val timelapseSpeed: Float,
+    private val introDuration: Double
 ) {
 
     /**
@@ -17,29 +18,55 @@ class SubtitleAnalyzer(
      */
     fun getReport(subNodes: List<AutoSubNode>): SubtitleReport {
 
-        val list = mutableListOf<Timelapse>()
-        var prevNode: AutoSubNode? = null
+        val timelapses = mutableListOf<Timelapse>()
+        var prevNode = AutoSubNode("", 0.0, 0.0) // first node
 
         var totalTimelapseDuration = 0.toDouble()
 
         for (subNode in subNodes) {
-            if (prevNode == null) {
-                // first
-                prevNode = subNode
-                continue
-            }
 
             val secDiff = subNode.start - prevNode.end
+
             if (secDiff >= minTimelapseSourceLength) {
                 val targetDuration = secDiff * timelapseSpeed
                 totalTimelapseDuration += targetDuration
-                list.add(Timelapse(prevNode.end, subNode.start, secDiff, targetDuration))
+                val sourceStart = prevNode.end
+                val targetStart = getTargetStart(subNodes, timelapses, sourceStart)
+                val targetEnd = targetStart + targetDuration
+
+                timelapses.add(
+                    Timelapse(
+                        sourceStart,
+                        sourceEnd = subNode.start,
+                        srcDuration = secDiff,
+                        targetDuration = targetDuration,
+                        targetStart = targetStart,
+                        targetEnd = targetEnd
+                    )
+                )
             }
 
             prevNode = subNode
         }
 
-        return SubtitleReport(totalTimelapseDuration, list)
+        return SubtitleReport(totalTimelapseDuration, timelapses)
+    }
+
+    private fun getTargetStart(
+        subNodes: List<AutoSubNode>,
+        timelapses: MutableList<Timelapse>,
+        sourceStart: Double
+    ): Double {
+        return if (timelapses.isEmpty()) {
+            introDuration + sourceStart
+        } else {
+            val talkSum = getSumOfTalkingBeforeSourceStart(subNodes, sourceStart)
+            return introDuration + timelapses.sumByDouble { it.targetDuration } + talkSum
+        }
+    }
+
+    private fun getSumOfTalkingBeforeSourceStart(subNodes: List<AutoSubNode>, sourceStart: Double): Double {
+        return subNodes.filter { it.start < sourceStart }.sumByDouble { it.end - it.start }
     }
 
 }

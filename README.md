@@ -4,7 +4,7 @@ A tool to automate video editing.
 ## Dependencies
 
  - [ffmpeg](https://ffmpeg.org) (>=4.2.2)
- - [pip](https://pip.pypa.io/en/stable/)
+ - [python](https://pip.pypa.io/en/stable/)
 
 ## Install
 

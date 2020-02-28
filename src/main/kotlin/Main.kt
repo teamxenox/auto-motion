@@ -1,7 +1,6 @@
 import com.theapache64.automotion.core.*
 import com.theapache64.automotion.utils.ComplexCommandExecutor
 import com.theapache64.automotion.utils.DateTimeUtils
-import com.theapache64.automotion.utils.SimpleCommandExecutor
 import java.io.File
 import java.lang.Exception
 import kotlin.system.exitProcess
@@ -45,6 +44,7 @@ object Main {
                     val subTitleColor = cp.getSubTitleColor()
                     val bgColor = cp.getBgColor()
                     val isKeepSh = cp.isKeepSh()
+                    val isRawFFmpeg = cp.isRawFFmpeg()
 
                     // Checking if there's multiple videos
                     val inputVideo = if (inputVideos.size > 1) {
@@ -61,7 +61,7 @@ object Main {
                     val autoSubNodes = AutoSubUtils.getSubFor(inputVideo, videoLanguage)
                     println("✔️ Audio analysis finished")
                     println("\uD83C\uDFA5 Analyzing video stream...")
-                    val subAnalyzer = SubtitleAnalyzer(minTimelapseSourceLength, timelapseSpeed)
+                    val subAnalyzer = SubtitleAnalyzer(minTimelapseSourceLength, timelapseSpeed, introDuration)
                     val subReport = subAnalyzer.getReport(autoSubNodes)
                     println("✔️ Video analysis finished")
                     println("\uD83C\uDFB8 Analyzing BGM...")
@@ -106,6 +106,7 @@ object Main {
                         subTitleColor,
                         fontFile,
                         bgColor,
+                        isRawFFmpeg,
                         highlightSection
                     )
 
@@ -116,11 +117,19 @@ object Main {
                         println("↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️")
                     }
                     for (timelapse in subReport.timelapses) {
-                        val duration = DateTimeUtils.getTimeFormatted(timelapse.end - timelapse.start)
+                        val duration = DateTimeUtils.getTimeFormatted(timelapse.sourceEnd - timelapse.sourceStart)
+
+                        val targetDetails = "@ [${DateTimeUtils.getTimeFormatted(
+                            timelapse.targetStart
+                        )} - ${DateTimeUtils.getTimeFormatted(timelapse.targetEnd)}]"
+
+                        val sourceDetails =
+                            "\uD83D\uDD5B [${DateTimeUtils.getTimeFormatted(timelapse.sourceStart)} - ${DateTimeUtils.getTimeFormatted(
+                                timelapse.sourceEnd
+                            )}]"
+
                         println(
-                            "\uD83D\uDD5B [${DateTimeUtils.getTimeFormatted(timelapse.start)} - ${DateTimeUtils.getTimeFormatted(
-                                timelapse.end
-                            )}] \uD83C\uDFA5 $duration \uD83D\uDC41️ ${timelapse.targetDuration.toInt()}sec"
+                            "$sourceDetails \uD83C\uDFA5 $duration \uD83D\uDC41️ ${timelapse.targetDuration.toInt()}sec $targetDetails"
                         )
                     }
                     if (subReport.timelapses.isNotEmpty()) {
@@ -162,7 +171,9 @@ object Main {
     }
 
     private fun isAllDepsAvailable(): Boolean {
-        return DependencyChecker.isFFmpegOkay()
+        return DependencyChecker.isFFmpegOkay() &&
+                DependencyChecker.isAutoSubOkay() &&
+                DependencyChecker.isFFPBOkay()
     }
 
 

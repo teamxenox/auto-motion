@@ -67,6 +67,9 @@ class CommandParser(
         private const val OPT_BG_COLOR = "BG"
         private const val OPT_BG_COLOR_LONG = "background-color"
         private const val OPT_KEEP_SH = "KS"
+        private const val OPT_KEEP_SH_LONG = "keep-sh"
+        private const val OPT_USE_RAW_FFMPEG = "RFMPG"
+        private const val OPT_USE_RAW_FFMPEG_LONG = "raw-ffmpeg"
 
 
         /**
@@ -249,7 +252,15 @@ class CommandParser(
                 "Background color. Default '$DEFAULT_BG_COLOR'"
             )
             .addOption(
+                OPT_USE_RAW_FFMPEG,
+                OPT_USE_RAW_FFMPEG_LONG,
+                false,
+                "To user ffmpeg rather than ffpb"
+            )
+            .addOption(
                 OPT_KEEP_SH,
+                OPT_KEEP_SH_LONG,
+                false,
                 "To keep final shell script file (developer-option). Default false."
             )
     }
@@ -450,5 +461,9 @@ class CommandParser(
 
     fun isKeepSh(): Boolean {
         return cli.hasOption(OPT_KEEP_SH)
+    }
+
+    fun isRawFFmpeg(): Boolean {
+        return cli.hasOption(OPT_USE_RAW_FFMPEG)
     }
 }

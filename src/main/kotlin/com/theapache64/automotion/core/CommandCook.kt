@@ -1,6 +1,6 @@
 package com.theapache64.automotion.core
 
-import com.theapache64.automotion.models.AutoSubNode
+import com.sun.org.apache.xpath.internal.operations.Bool
 import com.theapache64.automotion.models.SubtitleReport
 import com.theapache64.automotion.models.Timelapse
 import java.io.File
@@ -36,7 +36,7 @@ class CommandCook(
 
     private val fontFile: File,
     private val bgColor: String,
-
+    private val isRawFFmpeg: Boolean,
     private val highlightSection: Pair<Double, Double>?
 ) {
 
@@ -217,8 +217,8 @@ class CommandCook(
                 // adding normal video before timelapseWithIndex
                 sb.append(
                     """
-                    [0:v]trim=0:${tl.start},setpts=PTS-STARTPTS[$videoLabel]; 
-                    [0:a]atrim=0:${tl.start},asetpts=PTS-STARTPTS[$audioLabel]; 
+                    [0:v]trim=0:${tl.sourceStart},setpts=PTS-STARTPTS[$videoLabel]; 
+                    [0:a]atrim=0:${tl.sourceStart},asetpts=PTS-STARTPTS[$audioLabel]; 
                     
             """.trimIndent()
                 )
@@ -227,7 +227,7 @@ class CommandCook(
 
                 sb.append(
                     """
-                    [0:v]trim=${tl.start}:${tl.end},setpts=$timelapseSpeed*(PTS-STARTPTS)[$tvLabel]; 
+                    [0:v]trim=${tl.sourceStart}:${tl.sourceEnd},setpts=$timelapseSpeed*(PTS-STARTPTS)[$tvLabel]; 
                     [1:a]atrim=${bgm.first}:${bgm.second},asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=${tl.targetDuration - 1},asetpts=PTS-STARTPTS[$taLabel]; 
                     
                 """.trimIndent()
@@ -240,8 +240,8 @@ class CommandCook(
                 // adding normal video
                 sb.append(
                     """
-                     [0:v]trim=${prevTl!!.end}:${tl.start},setpts=PTS-STARTPTS[${videoLabel}]; 
-                     [0:a]atrim=${prevTl.end}:${tl.start},asetpts=PTS-STARTPTS[${audioLabel}];
+                     [0:v]trim=${prevTl!!.sourceEnd}:${tl.sourceStart},setpts=PTS-STARTPTS[${videoLabel}]; 
+                     [0:a]atrim=${prevTl.sourceEnd}:${tl.sourceStart},asetpts=PTS-STARTPTS[${audioLabel}];
                      
                 """.trimIndent()
                 )
@@ -250,7 +250,7 @@ class CommandCook(
                 // adding timelapse
                 sb.append(
                     """
-                    [0:v]trim=${tl.start}:${tl.end},setpts=$timelapseSpeed*(PTS-STARTPTS)[$tvLabel]; 
+                    [0:v]trim=${tl.sourceStart}:${tl.sourceEnd},setpts=$timelapseSpeed*(PTS-STARTPTS)[$tvLabel]; 
                     [1:a]atrim=${bgm.first}:${bgm.second},asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=${tl.targetDuration - 1},asetpts=PTS-STARTPTS[$taLabel]; 
                     
                 """.trimIndent()
@@ -274,12 +274,12 @@ class CommandCook(
             sb.append(
                 """
                      [0:v]
-                        trim=${prevTl.end},
+                        trim=${prevTl.sourceEnd},
                         setpts=PTS-STARTPTS
                      [${videoLabel}]; 
                      
                      [0:a]
-                        atrim=${prevTl.end},
+                        atrim=${prevTl.sourceEnd},
                         asetpts=PTS-STARTPTS
                      [${audioLabel}];
                      
@@ -366,9 +366,16 @@ class CommandCook(
     }
 
     private fun initCommand() {
+
+        val program = if (isRawFFmpeg) {
+            "ffmpeg"
+        } else {
+            "ffpb"
+        }
+
         sb.append(
             """
-            ffpb -y \
+            $program -y \
                 -i "${inputVideo.absolutePath}" \
                 -i "${bgm.absolutePath}" \
                 -f lavfi -i color=c=$bgColor:s="${videoDimens.first}"x"${videoDimens.second}":d=$introDuration \
