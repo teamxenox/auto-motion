@@ -5,6 +5,7 @@ import com.theapache64.automotion.utils.JarUtils
 import com.theapache64.automotion.utils.VersionUtils
 import org.apache.commons.cli.*
 import java.io.File
+import java.io.FileNotFoundException
 import java.util.*
 
 /**
@@ -292,7 +293,12 @@ class CommandParser(
         val inputFiles = cli.getOptionValues(OPT_INPUT_VIDEO)
         return mutableListOf<File>().apply {
             for (inputFilePath in inputFiles) {
-                add(File(inputFilePath))
+                val inputVideo = File(inputFilePath)
+                if (inputVideo.exists()) {
+                    add(inputVideo)
+                } else {
+                    throw FileNotFoundException(inputVideo.absolutePath)
+                }
             }
         }
     }
