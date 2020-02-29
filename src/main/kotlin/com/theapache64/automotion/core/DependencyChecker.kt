@@ -31,7 +31,14 @@ object DependencyChecker {
 
     fun isAutoSubOkay(): Boolean {
 
-        val isAutoSubOkay = SimpleCommandExecutor.executeCommand("autosub -h").startsWith(AUTOSUB_HELP)
+        val autoSubOutput = SimpleCommandExecutor.executeCommand(
+            "autosub -h",
+            isLivePrint = false,
+            isSuppressError = true,
+            isReturnAll = true
+        )
+        val isAutoSubOkay =
+            autoSubOutput.contains(AUTOSUB_HELP)
 
         if (isAutoSubOkay) {
             return true
