@@ -71,6 +71,8 @@ class CommandParser(
         private const val OPT_KEEP_SH_LONG = "keep-sh"
         private const val OPT_USE_RAW_FFMPEG = "RFMPG"
         private const val OPT_USE_RAW_FFMPEG_LONG = "raw-ffmpeg"
+        private const val OPT_RAW_SRT = "RSRT"
+        private const val OPT_RAW_SRT_LONG = "raw-srt"
 
 
         /**
@@ -251,6 +253,12 @@ class CommandParser(
                 OPT_BG_COLOR_LONG,
                 true,
                 "Background color. Default '$DEFAULT_BG_COLOR'"
+            )
+            .addOption(
+                OPT_RAW_SRT,
+                OPT_RAW_SRT_LONG,
+                true,
+                "To cancel autosub usage and use passed SRT file for timelapse calculation"
             )
             .addOption(
                 OPT_USE_RAW_FFMPEG,
@@ -470,5 +478,13 @@ class CommandParser(
 
     fun isRawFFmpeg(): Boolean {
         return cli.hasOption(OPT_USE_RAW_FFMPEG)
+    }
+
+    fun getRawSrt(): File? {
+        return if (cli.hasOption(OPT_RAW_SRT)) {
+            File(cli.getOptionValue(OPT_RAW_SRT))
+        } else {
+            null
+        }
     }
 }

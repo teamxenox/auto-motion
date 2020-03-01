@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken
 import com.theapache64.automotion.models.AutoSubNode
 import com.theapache64.automotion.utils.ComplexCommandExecutor
 import java.io.File
+import java.io.FileNotFoundException
 
 /**
  * To do operations related to autosub
@@ -64,5 +65,13 @@ object AutoSubUtils {
         val filePath = OUTPUT_REGEX.find(autoSubOutput)?.groupValues?.get(1)
         require(filePath != null) { "Failed to get file name from autosub output :  $autoSubOutput" }
         return File(filePath)
+    }
+
+    fun getSubFromSrt(rawSrt: File): List<AutoSubNode> {
+        if (rawSrt.exists()) {
+            return mutableListOf()
+        } else {
+            throw FileNotFoundException(rawSrt.absolutePath)
+        }
     }
 }

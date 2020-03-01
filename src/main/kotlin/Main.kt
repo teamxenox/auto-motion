@@ -45,6 +45,7 @@ object Main {
                     val bgColor = cp.getBgColor()
                     val isKeepSh = cp.isKeepSh()
                     val isRawFFmpeg = cp.isRawFFmpeg()
+                    val rawSrt = cp.getRawSrt()
 
                     // Checking if there's multiple videos
                     val inputVideo = if (inputVideos.size > 1) {
@@ -57,13 +58,21 @@ object Main {
                     }
 
                     // Downloading subtitles
-                    println("\uD83D\uDD0A Analyzing audio stream... ")
-                    val autoSubNodes = AutoSubUtils.getSubFor(inputVideo, videoLanguage)
+
+                    val autoSubNodes = if (rawSrt == null) {
+                        println("\uD83D\uDD0A Analyzing audio stream... ")
+                        AutoSubUtils.getSubFor(inputVideo, videoLanguage)
+                    } else {
+                        println("\uD83D\uDD0A Converting SRT to JSON... ")
+                        AutoSubUtils.getSubFromSrt(rawSrt)
+                    }
                     println("✔️ Audio analysis finished")
                     println("\uD83C\uDFA5 Analyzing video stream...")
                     val subAnalyzer =
-                        SubtitleAnalyzer(autoSubNodes,
-                            minTimelapseSourceLength, timelapseSpeed, introDuration)
+                        SubtitleAnalyzer(
+                            autoSubNodes,
+                            minTimelapseSourceLength, timelapseSpeed, introDuration
+                        )
                     val subReport = subAnalyzer.getReport()
                     println("✔️ Video analysis finished")
                     println("\uD83C\uDFB8 Analyzing BGM...")

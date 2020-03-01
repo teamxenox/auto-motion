@@ -1,9 +1,10 @@
 package com.theapache64.automotion.core
 
+
+import SRTParser
 import com.winterbe.expekt.should
 import org.junit.Test
 import java.io.File
-import java.lang.IllegalArgumentException
 
 class AutoSubUtilsTest {
 
@@ -23,5 +24,13 @@ class AutoSubUtilsTest {
         } catch (e: IllegalArgumentException) {
             assert(true)
         }
+    }
+
+    @Test
+    fun testSrtParsingSuccess() {
+        val srtFile = File("lab/lion.srt")
+        println(srtFile.absolutePath)
+        val subTitles = SRTParser.getSubtitlesFromFile(srtFile.absolutePath)
+        println(subTitles)
     }
 }
