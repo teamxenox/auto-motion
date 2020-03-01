@@ -1,7 +1,7 @@
 package com.theapache64.automotion.core
 
 
-import SRTParser
+import com.theapache64.automotion.core.srtparser.SrtParser
 import com.winterbe.expekt.should
 import org.junit.Test
 import java.io.File
@@ -30,7 +30,7 @@ class AutoSubUtilsTest {
     fun testSrtParsingSuccess() {
         val srtFile = File("lab/lion.srt")
         println(srtFile.absolutePath)
-        val subTitles = SRTParser.getSubtitlesFromFile(srtFile.absolutePath)
-        println(subTitles)
+        val parser = SrtParser().parse(srtFile)
+        parser.subtitles.size.should.equal(3)
     }
 }
