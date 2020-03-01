@@ -2,6 +2,7 @@ package com.theapache64.automotion.core
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.theapache64.automotion.core.srtparser.SrtParser
 import com.theapache64.automotion.models.AutoSubNode
 import com.theapache64.automotion.utils.ComplexCommandExecutor
 import java.io.File
@@ -69,7 +70,18 @@ object AutoSubUtils {
 
     fun getSubFromSrt(rawSrt: File): List<AutoSubNode> {
         if (rawSrt.exists()) {
-            return mutableListOf()
+            val parser = SrtParser().parse(rawSrt)
+            val autoSubNodes = mutableListOf<AutoSubNode>()
+            for (srt in parser.subtitles) {
+                autoSubNodes.add(
+                    AutoSubNode(
+                        srt.text,
+                        srt.begin.toSeconds(),
+                        srt.end.toSeconds()
+                    )
+                )
+            }
+            return autoSubNodes
         } else {
             throw FileNotFoundException(rawSrt.absolutePath)
         }

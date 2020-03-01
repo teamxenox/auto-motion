@@ -14,6 +14,9 @@ class SrtParser {
     @Throws(IllegalSrtFormatException::class)
     fun parse(file: File, charset: Charset = Charsets.UTF_8): SrtParser {
 
+        // precheck
+        runPreCheck(file, charset)
+
         val reader = file.bufferedReader(charset)
         val subtitleList = mutableListOf<Subtitle>()
 
@@ -27,17 +30,11 @@ class SrtParser {
 
                 if (line.isNotEmpty()) {
                     when {
-                        (index == null) -> {
-                            if (line.startsWith("\uFEFF")) {
-                                println("Line starting with space '$line'")
-                                println("trimming...")
-                                val newLine = line.trim()
-                                println("New line is '$newLine'")
-                            }
+                        (index == null) ->
                             index = line.toLongOrNull() ?: throw IllegalSrtFormatException(
                                 "Invalid index: '${line.trim()}'"
                             )
-                        }
+
                         (begin == null) -> {
                             val timestamps = line.split(" --> ")
 
@@ -65,8 +62,11 @@ class SrtParser {
                                 )
                             }
                         }
-                        (text == null) -> text = line
-                        else -> text += "\n$line"
+
+                        (text == null) ->
+                            text = line
+                        else ->
+                            text += "\n$line"
                     }
                 } else if (text != null) {
                     subtitleList.add(
@@ -88,6 +88,13 @@ class SrtParser {
         subtitleList.sortBy { it -> it.index } // ensure subtitles are sorted correctly according to index
         subtitles = subtitleList.toList()
         return this
+    }
+
+    private fun runPreCheck(file: File, charset: Charset) {
+        val fileContents = file.readText(charset)
+        if (!fileContents.endsWith("\n\n")) {
+            file.appendText("\n\n")
+        }
     }
 
     private fun realTrim(line: String): String {

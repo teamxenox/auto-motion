@@ -61,12 +61,16 @@ object Main {
 
                     val autoSubNodes = if (rawSrt == null) {
                         println("\uD83D\uDD0A Analyzing audio stream... ")
-                        AutoSubUtils.getSubFor(inputVideo, videoLanguage)
+                        val subNodes = AutoSubUtils.getSubFor(inputVideo, videoLanguage)
+                        println("✔️ Audio analysis finished")
+                        subNodes
                     } else {
-                        println("\uD83D\uDD0A Converting SRT to JSON... ")
-                        AutoSubUtils.getSubFromSrt(rawSrt)
+                        println("\uD83D\uDD0A Analyzing subtitles ... ")
+                        val subNodes = AutoSubUtils.getSubFromSrt(rawSrt)
+                        println("✔️ Subtitle analysis finished")
+                        subNodes
                     }
-                    println("✔️ Audio analysis finished")
+
                     println("\uD83C\uDFA5 Analyzing video stream...")
                     val subAnalyzer =
                         SubtitleAnalyzer(
