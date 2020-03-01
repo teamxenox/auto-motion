@@ -8,6 +8,7 @@ import com.theapache64.automotion.models.Timelapse
  * To analyze subtitles downloaded using autosub
  */
 class SubtitleAnalyzer(
+    private val subNodes: List<AutoSubNode>,
     private val minTimelapseSourceLength: Double,
     private val timelapseSpeed: Float,
     private val introDuration: Double
@@ -16,9 +17,10 @@ class SubtitleAnalyzer(
     /**
      * To get timelapse timestamps and total timelapse duration
      */
-    fun getReport(subNodes: List<AutoSubNode>): SubtitleReport {
+    fun getReport(): SubtitleReport {
 
         val timelapses = mutableListOf<Timelapse>()
+        val nonTimelapseDurations = mutableListOf<Double>() // to non-talking area but no timelapse
         var prevNode = AutoSubNode("", 0.0, 0.0) // first node
 
         var totalTimelapseDuration = 0.toDouble()
@@ -32,7 +34,7 @@ class SubtitleAnalyzer(
                 val targetDuration = secDiff * timelapseSpeed
                 totalTimelapseDuration += targetDuration
                 val sourceStart = prevNode.end
-                val targetStart = getTargetStart(subNodes, timelapses, sourceStart)
+                val targetStart = getTargetStart(timelapses, nonTimelapseDurations, sourceStart)
                 val targetEnd = targetStart + targetDuration
 
                 val timelapse = Timelapse(
@@ -45,24 +47,28 @@ class SubtitleAnalyzer(
                 )
 
                 timelapses.add(timelapse)
+            } else {
+                nonTimelapseDurations.add(secDiff)
             }
 
             prevNode = subNode
         }
 
-        return SubtitleReport(totalTimelapseDuration, timelapses)
+        return SubtitleReport(totalTimelapseDuration, timelapses, nonTimelapseDurations)
     }
 
     private fun getTargetStart(
-        subNodes: List<AutoSubNode>,
-        timelapses: MutableList<Timelapse>,
+        timelapses: List<Timelapse>,
+        nonTimelapseDurations: List<Double>,
         sourceStart: Double
     ): Double {
         return if (timelapses.isEmpty()) {
             introDuration + sourceStart
         } else {
-            val talkSum = getSumOfTalkingBeforeSourceStart(subNodes, sourceStart)
-            return introDuration + timelapses.sumByDouble { it.targetDuration } + talkSum
+            val talkSum = getSumOfTalkingBeforeSourceStart(subNodes, sourceStart) // total talking
+            val timelapseSum = timelapses.sumByDouble { it.targetDuration } // total timelapse
+            val nonTimelapseSum = nonTimelapseDurations.sumByDouble { it } // total non talking
+            return introDuration + timelapseSum + talkSum + nonTimelapseSum
         }
     }
 

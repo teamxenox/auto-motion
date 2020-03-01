@@ -61,8 +61,10 @@ object Main {
                     val autoSubNodes = AutoSubUtils.getSubFor(inputVideo, videoLanguage)
                     println("✔️ Audio analysis finished")
                     println("\uD83C\uDFA5 Analyzing video stream...")
-                    val subAnalyzer = SubtitleAnalyzer(minTimelapseSourceLength, timelapseSpeed, introDuration)
-                    val subReport = subAnalyzer.getReport(autoSubNodes)
+                    val subAnalyzer =
+                        SubtitleAnalyzer(autoSubNodes,
+                            minTimelapseSourceLength, timelapseSpeed, introDuration)
+                    val subReport = subAnalyzer.getReport()
                     println("✔️ Video analysis finished")
                     println("\uD83C\uDFB8 Analyzing BGM...")
                     val bgmAgent = BgmAgent(

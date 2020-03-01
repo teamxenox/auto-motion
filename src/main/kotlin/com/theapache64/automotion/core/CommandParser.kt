@@ -77,7 +77,7 @@ class CommandParser(
          * Default values
          */
         private const val DEFAULT_LANGUAGE = "en"
-        private const val DEFAULT_MIN_TIMESTAMP_LENGTH = 2
+        private const val DEFAULT_MIN_TIMESTAMP_LENGTH = 2.0
         const val DEFAULT_TIMELAPSE_SPEED = 0.25f
         const val DEFAULT_MIN_TIMELAPSE_SRC_LENGTH = DEFAULT_MIN_TIMESTAMP_LENGTH / DEFAULT_TIMELAPSE_SPEED
         const val DEFAULT_INTRO_DURATION = 3.0
