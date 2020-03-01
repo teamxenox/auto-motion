@@ -1,6 +1,6 @@
 package com.theapache64.automotion.core
 
-import com.theapache64.automotion.models.AutoSubNode
+import com.sun.org.apache.xpath.internal.operations.Bool
 import com.theapache64.automotion.models.SubtitleReport
 import com.theapache64.automotion.models.Timelapse
 import java.io.File
@@ -36,7 +36,7 @@ class CommandCook(
 
     private val fontFile: File,
     private val bgColor: String,
-
+    private val isRawFFmpeg: Boolean,
     private val highlightSection: Pair<Double, Double>?
 ) {
 
@@ -183,7 +183,9 @@ class CommandCook(
               drawtext=fontfile='${fontFile.absolutePath}':fontsize=$titleFontSize:fontcolor=$titleColor:x=(w-text_w)/2:y=(h-text_h-text_h)/2:text='$creditsTitle', 
               drawtext=fontfile='${fontFile.absolutePath}':fontsize=$subTitleFontSize:fontcolor=$subTitleColor:x=(w-text_w)/2:y=(h+text_h)/2:text='$creditsSubTitle' 
             [${CREDITS_VIDEO_LABEL}];
-            [1:a]atrim=${creditsBgm.first}:${creditsBgm.second},asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=${creditsDuration - 1},asetpts=PTS-STARTPTS[${CREDITS_AUDIO_LABEL}]; 
+            [1:a]atrim=${creditsBgm.first}:${creditsBgm.second},asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=${getAudioFadeOut(
+                creditsDuration
+            )},asetpts=PTS-STARTPTS[${CREDITS_AUDIO_LABEL}]; 
             
         """.trimIndent()
         )
@@ -217,8 +219,8 @@ class CommandCook(
                 // adding normal video before timelapseWithIndex
                 sb.append(
                     """
-                    [0:v]trim=0:${tl.start},setpts=PTS-STARTPTS[$videoLabel]; 
-                    [0:a]atrim=0:${tl.start},asetpts=PTS-STARTPTS[$audioLabel]; 
+                    [0:v]trim=0:${tl.sourceStart},setpts=PTS-STARTPTS[$videoLabel]; 
+                    [0:a]atrim=0:${tl.sourceStart},asetpts=PTS-STARTPTS[$audioLabel]; 
                     
             """.trimIndent()
                 )
@@ -227,8 +229,10 @@ class CommandCook(
 
                 sb.append(
                     """
-                    [0:v]trim=${tl.start}:${tl.end},setpts=$timelapseSpeed*(PTS-STARTPTS)[$tvLabel]; 
-                    [1:a]atrim=${bgm.first}:${bgm.second},asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=${tl.targetDuration - 1},asetpts=PTS-STARTPTS[$taLabel]; 
+                    [0:v]trim=${tl.sourceStart}:${tl.sourceEnd},setpts=$timelapseSpeed*(PTS-STARTPTS)[$tvLabel]; 
+                    [1:a]atrim=${bgm.first}:${bgm.second},asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=${getAudioFadeOut(
+                        tl.targetDuration
+                    )},asetpts=PTS-STARTPTS[$taLabel]; 
                     
                 """.trimIndent()
                 )
@@ -240,8 +244,8 @@ class CommandCook(
                 // adding normal video
                 sb.append(
                     """
-                     [0:v]trim=${prevTl!!.end}:${tl.start},setpts=PTS-STARTPTS[${videoLabel}]; 
-                     [0:a]atrim=${prevTl.end}:${tl.start},asetpts=PTS-STARTPTS[${audioLabel}];
+                     [0:v]trim=${prevTl!!.sourceEnd}:${tl.sourceStart},setpts=PTS-STARTPTS[${videoLabel}]; 
+                     [0:a]atrim=${prevTl.sourceEnd}:${tl.sourceStart},asetpts=PTS-STARTPTS[${audioLabel}];
                      
                 """.trimIndent()
                 )
@@ -250,8 +254,10 @@ class CommandCook(
                 // adding timelapse
                 sb.append(
                     """
-                    [0:v]trim=${tl.start}:${tl.end},setpts=$timelapseSpeed*(PTS-STARTPTS)[$tvLabel]; 
-                    [1:a]atrim=${bgm.first}:${bgm.second},asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=${tl.targetDuration - 1},asetpts=PTS-STARTPTS[$taLabel]; 
+                    [0:v]trim=${tl.sourceStart}:${tl.sourceEnd},setpts=$timelapseSpeed*(PTS-STARTPTS)[$tvLabel]; 
+                    [1:a]atrim=${bgm.first}:${bgm.second},asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=${getAudioFadeOut(
+                        tl.targetDuration
+                    )},asetpts=PTS-STARTPTS[$taLabel]; 
                     
                 """.trimIndent()
                 )
@@ -274,12 +280,12 @@ class CommandCook(
             sb.append(
                 """
                      [0:v]
-                        trim=${prevTl.end},
+                        trim=${prevTl.sourceEnd},
                         setpts=PTS-STARTPTS
                      [${videoLabel}]; 
                      
                      [0:a]
-                        atrim=${prevTl.end},
+                        atrim=${prevTl.sourceEnd},
                         asetpts=PTS-STARTPTS
                      [${audioLabel}];
                      
@@ -292,10 +298,26 @@ class CommandCook(
         return videoAudioIds
     }
 
+    private fun getAudioFadeOut(targetDuration: Double): Double {
+
+        return when {
+            targetDuration <= 2 -> {
+                targetDuration - (targetDuration * 0.10)
+            }
+
+            targetDuration in 2.1..5.0 -> {
+                targetDuration - 0.5
+            }
+
+            else -> {
+                targetDuration - 1
+            }
+        }
+    }
+
     private fun addIntro() {
 
-        val introBgm = bgmProvider.getBgm(introDuration.toDouble()).interval
-
+        val introBgm = bgmProvider.getBgm(introDuration).interval
 
         // Adding intro
         sb.append(
@@ -324,7 +346,7 @@ class CommandCook(
                     :d=1,
                 afade=
                     t=out
-                    :st=${introDuration - 1},
+                    :st=${getAudioFadeOut(introDuration)},
                 asetpts=PTS-STARTPTS
             [$INTRO_AUDIO_LABEL]; 
             
@@ -366,9 +388,16 @@ class CommandCook(
     }
 
     private fun initCommand() {
+
+        val program = if (isRawFFmpeg) {
+            "ffmpeg"
+        } else {
+            "ffpb"
+        }
+
         sb.append(
             """
-            ffpb -y \
+            $program -y \
                 -i "${inputVideo.absolutePath}" \
                 -i "${bgm.absolutePath}" \
                 -f lavfi -i color=c=$bgColor:s="${videoDimens.first}"x"${videoDimens.second}":d=$introDuration \

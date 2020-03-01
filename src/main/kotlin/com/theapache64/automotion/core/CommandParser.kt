@@ -5,6 +5,7 @@ import com.theapache64.automotion.utils.JarUtils
 import com.theapache64.automotion.utils.VersionUtils
 import org.apache.commons.cli.*
 import java.io.File
+import java.io.FileNotFoundException
 import java.util.*
 
 /**
@@ -16,70 +17,70 @@ class CommandParser(
 
 
     companion object {
-        private const val OPT_HELP = "h"
+        private const val OPT_HELP = "H"
         private const val OPT_HELP_LONG = "help"
-
-        private const val OPT_INPUT_VIDEO = "v"
+        private const val OPT_INPUT_VIDEO = "V"
         private const val OPT_INPUT_VIDEO_LONG = "video"
-
-        private const val OPT_BGM = "bgm"
+        private const val OPT_BGM = "BGM"
         private const val OPT_BGM_LONG = "background-music"
-
-        private const val OPT_SUB_TITLE = "st"
+        private const val OPT_SUB_TITLE = "ST"
         private const val OPT_SUB_TITLE_LONG = "sub-title"
-        private const val OPT_VIDEO_LANG = "vl"
+        private const val OPT_VIDEO_LANG = "VL"
         private const val OPT_VIDEO_LANG_LONG = "video-lang"
-        private const val OPT_MIN_TL_SRC_LEN = "mtl"
+        private const val OPT_MIN_TL_SRC_LEN = "MTL"
         private const val OPT_MIN_TL_SRC_LEN_LONG = "min-tl-src-len"
-        private const val OPT_TIMELAPSE_SPEED = "tls"
+        private const val OPT_TIMELAPSE_SPEED = "TLS"
         private const val OPT_TIMELAPSE_SPEED_LONG = "timelapse-speed"
-        private const val OPT_INTRO_DURATION = "id"
+        private const val OPT_INTRO_DURATION = "ID"
         private const val OPT_INTRO_DURATION_LONG = "intro-duration"
-        private const val OPT_CREDITS_DURATION = "cr"
+        private const val OPT_CREDITS_DURATION = "CR"
         private const val OPT_CREDITS_DURATION_LONG = "credits-duration"
-        private const val OPT_WATERMARK = "wm"
+        private const val OPT_WATERMARK = "WM"
         private const val OPT_WATERMARK_LONG = "watermark"
-        private const val OPT_INTRO_TITLE = "it"
+        private const val OPT_INTRO_TITLE = "IT"
         private const val OPT_INTRO_TITLE_LONG = "intro-title"
-        private const val OPT_CREDITS_TITLE = "ct"
+        private const val OPT_CREDITS_TITLE = "CT"
         private const val OPT_CREDITS_TITLE_LONG = "credits-title"
-        private const val OPT_INTRO_SUB_TITLE = "ist"
+        private const val OPT_INTRO_SUB_TITLE = "IST"
         private const val OPT_INTRO_SUB_TITLE_LONG = "intro-sub-title"
-        private const val OPT_CREDITS_SUB_TITLE = "cst"
+        private const val OPT_CREDITS_SUB_TITLE = "CST"
         private const val OPT_CREDITS_SUB_TITLE_LONG = "credits-sub-title"
-        private const val OPT_FONT = "f"
+        private const val OPT_FONT = "F"
         private const val OPT_FONT_LONG = "font"
-        private const val OPT_HIGHLIGHT = "hl"
+        private const val OPT_HIGHLIGHT = "HL"
         private const val OPT_HIGHLIGHT_LONG = "highlight"
-        private const val OPT_WATERMARK_COLOR = "wmc"
+        private const val OPT_WATERMARK_COLOR = "WMC"
         private const val OPT_WATERMARK_TEXT_COLOR_LONG = "wm-color"
-        private const val OPT_WATERMARK_FONT_SIZE = "wms"
+        private const val OPT_WATERMARK_FONT_SIZE = "WMS"
         private const val OPT_WATERMARK_FONT_SIZE_LONG = "wm-size"
-        private const val OPT_WATERMARK_BG_COLOR = "wmbg"
+        private const val OPT_WATERMARK_BG_COLOR = "WMBG"
         private const val OPT_WATERMARK_BG_COLOR_LONG = "wm-background-color"
-        private const val OPT_WATERMARK_BG_OPACITY = "wmbgo"
+        private const val OPT_WATERMARK_BG_OPACITY = "WMBGO"
         private const val OPT_WATERMARK_BG_OPACITY_LONG = "wm-background-opacity"
-        private const val OPT_TITLE_FONT_SIZE = "tfs"
+        private const val OPT_TITLE_FONT_SIZE = "TFS"
         private const val OPT_TITLE_FONT_SIZE_LONG = "title-font-size"
-        private const val OPT_SUB_TITLE_FONT_SIZE = "stfs"
+        private const val OPT_SUB_TITLE_FONT_SIZE = "STFS"
         private const val OPT_SUB_TITLE_FONT_SIZE_LONG = "sub-title-font-size"
-        private const val OPT_TITLE_COLOR = "tc"
+        private const val OPT_TITLE_COLOR = "TC"
         private const val OPT_TITLE_COLOR_LONG = "title-color"
-        private const val OPT_SUB_TITLE_COLOR = "stc"
+        private const val OPT_SUB_TITLE_COLOR = "STC"
         private const val OPT_SUB_TITLE_COLOR_LONG = "sub-title-color"
-        private const val OPT_BG_COLOR = "bg"
+        private const val OPT_BG_COLOR = "BG"
         private const val OPT_BG_COLOR_LONG = "background-color"
-        private const val OPT_KEEP_SH = "keepsh"
+        private const val OPT_KEEP_SH = "KS"
+        private const val OPT_KEEP_SH_LONG = "keep-sh"
+        private const val OPT_USE_RAW_FFMPEG = "RFMPG"
+        private const val OPT_USE_RAW_FFMPEG_LONG = "raw-ffmpeg"
 
 
         /**
          * Default values
          */
         private const val DEFAULT_LANGUAGE = "en"
-        private const val DEFAULT_MIN_TIMESTAMP_LENGTH = 2
+        private const val DEFAULT_MIN_TIMESTAMP_LENGTH = 2.0
         const val DEFAULT_TIMELAPSE_SPEED = 0.25f
         const val DEFAULT_MIN_TIMELAPSE_SRC_LENGTH = DEFAULT_MIN_TIMESTAMP_LENGTH / DEFAULT_TIMELAPSE_SPEED
-        private const val DEFAULT_INTRO_DURATION = 3
+        const val DEFAULT_INTRO_DURATION = 3.0
         private const val DEFAULT_CREDITS_DURATION = 2
         private val DEFAULT_FONT = "${JarUtils.getJarDir()}lab/komikax.ttf"
         private const val DEFAULT_WATERMARK_COLOR = "white"
@@ -252,7 +253,15 @@ class CommandParser(
                 "Background color. Default '$DEFAULT_BG_COLOR'"
             )
             .addOption(
+                OPT_USE_RAW_FFMPEG,
+                OPT_USE_RAW_FFMPEG_LONG,
+                false,
+                "To user ffmpeg rather than ffpb"
+            )
+            .addOption(
                 OPT_KEEP_SH,
+                OPT_KEEP_SH_LONG,
+                false,
                 "To keep final shell script file (developer-option). Default false."
             )
     }
@@ -284,7 +293,12 @@ class CommandParser(
         val inputFiles = cli.getOptionValues(OPT_INPUT_VIDEO)
         return mutableListOf<File>().apply {
             for (inputFilePath in inputFiles) {
-                add(File(inputFilePath))
+                val inputVideo = File(inputFilePath)
+                if (inputVideo.exists()) {
+                    add(inputVideo)
+                } else {
+                    throw FileNotFoundException(inputVideo.absolutePath)
+                }
             }
         }
     }
@@ -452,5 +466,9 @@ class CommandParser(
 
     fun isKeepSh(): Boolean {
         return cli.hasOption(OPT_KEEP_SH)
+    }
+
+    fun isRawFFmpeg(): Boolean {
+        return cli.hasOption(OPT_USE_RAW_FFMPEG)
     }
 }
