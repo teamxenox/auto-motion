@@ -256,7 +256,7 @@ class CommandParser(
                 OPT_USE_RAW_FFMPEG,
                 OPT_USE_RAW_FFMPEG_LONG,
                 false,
-                "To user ffmpeg rather than ffpb"
+                "To use ffmpeg rather than ffpb"
             )
             .addOption(
                 OPT_KEEP_SH,
