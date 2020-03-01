@@ -1,0 +1,307 @@
+ffpb -y \
+    -i "/home/theapache64/Documents/projects/auto-motion/lab/movie.mkv" \
+    -i "/home/theapache64/Documents/projects/auto-motion/lab/merged.mp3" \
+    -f lavfi -i color=c=black:s="1280"x"544":d=3.0 \
+    -filter_complex \
+        "[2:v] 
+  drawtext=
+    fontfile='/home/theapache64/Documents/projects/auto-motion/lab/komikax.ttf'
+    :fontsize=30
+    :fontcolor=white
+    :x=(w-text_w)/2
+    :y=(h-text_h-text_h)/2
+    :text='theapache64', 
+  drawtext=
+    fontfile='/home/theapache64/Documents/projects/auto-motion/lab/komikax.ttf'
+    :fontsize=15
+    :fontcolor=gray
+    :x=(w-text_w)/2
+    :y=(h+text_h)/2
+    :text='Mar 01 2020' 
+[vi];
+
+[1:a]
+    atrim=0.0:3.0,
+    afade=
+        t=in
+        :d=1,
+    afade=
+        t=out
+        :st=2.5,
+    asetpts=PTS-STARTPTS
+[ai]; 
+[0:v]trim=0:0.0,setpts=PTS-STARTPTS[v1]; 
+[0:a]atrim=0:0.0,asetpts=PTS-STARTPTS[a1]; 
+[0:v]trim=0.0:27.457,setpts=0.25*(PTS-STARTPTS)[tv2]; 
+[1:a]atrim=4.0:10.86425,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=5.86425,asetpts=PTS-STARTPTS[ta2]; 
+[0:v]trim=27.457:48.479,setpts=PTS-STARTPTS[v3]; 
+[0:a]atrim=27.457:48.479,asetpts=PTS-STARTPTS[a3];
+[0:v]trim=48.479:56.92,setpts=0.25*(PTS-STARTPTS)[tv4]; 
+[1:a]atrim=11.86425:13.9745,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.6102500000000006,asetpts=PTS-STARTPTS[ta4]; 
+[0:v]trim=56.92:62.26,setpts=PTS-STARTPTS[v5]; 
+[0:a]atrim=56.92:62.26,asetpts=PTS-STARTPTS[a5];
+[0:v]trim=62.26:70.935,setpts=0.25*(PTS-STARTPTS)[tv6]; 
+[1:a]atrim=14.9745:17.143250000000002,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.668750000000001,asetpts=PTS-STARTPTS[ta6]; 
+[0:v]trim=70.935:232.663,setpts=PTS-STARTPTS[v7]; 
+[0:a]atrim=70.935:232.663,asetpts=PTS-STARTPTS[a7];
+[0:v]trim=232.663:247.245,setpts=0.25*(PTS-STARTPTS)[tv8]; 
+[1:a]atrim=18.143250000000002:21.78875,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=3.1454999999999984,asetpts=PTS-STARTPTS[ta8]; 
+[0:v]trim=247.245:384.583,setpts=PTS-STARTPTS[v9]; 
+[0:a]atrim=247.245:384.583,asetpts=PTS-STARTPTS[a9];
+[0:v]trim=384.583:398.997,setpts=0.25*(PTS-STARTPTS)[tv10]; 
+[1:a]atrim=22.78875:26.392249999999997,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=3.103499999999997,asetpts=PTS-STARTPTS[ta10]; 
+[0:v]trim=398.997:400.799,setpts=PTS-STARTPTS[v11]; 
+[0:a]atrim=398.997:400.799,asetpts=PTS-STARTPTS[a11];
+[0:v]trim=400.799:409.206,setpts=0.25*(PTS-STARTPTS)[tv12]; 
+[1:a]atrim=27.392249999999997:29.494000000000007,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.6017500000000098,asetpts=PTS-STARTPTS[ta12]; 
+[0:v]trim=409.206:421.92,setpts=PTS-STARTPTS[v13]; 
+[0:a]atrim=409.206:421.92,asetpts=PTS-STARTPTS[a13];
+[0:v]trim=421.92:434.98,setpts=0.25*(PTS-STARTPTS)[tv14]; 
+[1:a]atrim=30.494000000000007:33.75900000000001,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.7650000000000006,asetpts=PTS-STARTPTS[ta14]; 
+[0:v]trim=434.98:435.1,setpts=PTS-STARTPTS[v15]; 
+[0:a]atrim=434.98:435.1,asetpts=PTS-STARTPTS[a15];
+[0:v]trim=435.1:443.406,setpts=0.25*(PTS-STARTPTS)[tv16]; 
+[1:a]atrim=34.75900000000001:36.8355,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.0764999999999958,asetpts=PTS-STARTPTS[ta16]; 
+[0:v]trim=443.406:560.859,setpts=PTS-STARTPTS[v17]; 
+[0:a]atrim=443.406:560.859,asetpts=PTS-STARTPTS[a17];
+[0:v]trim=560.859:581.78,setpts=0.25*(PTS-STARTPTS)[tv18]; 
+[1:a]atrim=37.8355:43.06574999999999,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=4.230249999999984,asetpts=PTS-STARTPTS[ta18]; 
+[0:v]trim=581.78:594.24,setpts=PTS-STARTPTS[v19]; 
+[0:a]atrim=581.78:594.24,asetpts=PTS-STARTPTS[a19];
+[0:v]trim=594.24:613.144,setpts=0.25*(PTS-STARTPTS)[tv20]; 
+[1:a]atrim=44.06574999999999:48.791749999999986,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=4.225999999999999,asetpts=PTS-STARTPTS[ta20]; 
+[0:v]trim=613.144:616.381,setpts=PTS-STARTPTS[v21]; 
+[0:a]atrim=613.144:616.381,asetpts=PTS-STARTPTS[a21];
+[0:v]trim=616.381:729.626,setpts=0.25*(PTS-STARTPTS)[tv22]; 
+[1:a]atrim=49.791749999999986:78.10299999999998,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=27.31125,asetpts=PTS-STARTPTS[ta22]; 
+[0:v]trim=729.626:735.799,setpts=PTS-STARTPTS[v23]; 
+[0:a]atrim=729.626:735.799,asetpts=PTS-STARTPTS[a23];
+[0:v]trim=735.799:749.346,setpts=0.25*(PTS-STARTPTS)[tv24]; 
+[1:a]atrim=79.10299999999998:82.48974999999999,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.8867500000000064,asetpts=PTS-STARTPTS[ta24]; 
+[0:v]trim=749.346:812.509,setpts=PTS-STARTPTS[v25]; 
+[0:a]atrim=749.346:812.509,asetpts=PTS-STARTPTS[a25];
+[0:v]trim=812.509:821.251,setpts=0.25*(PTS-STARTPTS)[tv26]; 
+[1:a]atrim=83.48974999999999:85.67524999999998,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.6854999999999905,asetpts=PTS-STARTPTS[ta26]; 
+[0:v]trim=821.251:1170.401,setpts=PTS-STARTPTS[v27]; 
+[0:a]atrim=821.251:1170.401,asetpts=PTS-STARTPTS[a27];
+[0:v]trim=1170.401:1180.711,setpts=0.25*(PTS-STARTPTS)[tv28]; 
+[1:a]atrim=86.67524999999998:89.25274999999996,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.0774999999999864,asetpts=PTS-STARTPTS[ta28]; 
+[0:v]trim=1180.711:1270.8,setpts=PTS-STARTPTS[v29]; 
+[0:a]atrim=1180.711:1270.8,asetpts=PTS-STARTPTS[a29];
+[0:v]trim=1270.8:1280.51,setpts=0.25*(PTS-STARTPTS)[tv30]; 
+[1:a]atrim=90.25274999999996:92.68024999999997,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.927500000000009,asetpts=PTS-STARTPTS[ta30]; 
+[0:v]trim=1280.51:1286.784,setpts=PTS-STARTPTS[v31]; 
+[0:a]atrim=1280.51:1286.784,asetpts=PTS-STARTPTS[a31];
+[0:v]trim=1286.784:1320.49,setpts=0.25*(PTS-STARTPTS)[tv32]; 
+[1:a]atrim=93.68024999999997:102.10674999999995,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=7.426499999999976,asetpts=PTS-STARTPTS[ta32]; 
+[0:v]trim=1320.49:1386.851,setpts=PTS-STARTPTS[v33]; 
+[0:a]atrim=1320.49:1386.851,asetpts=PTS-STARTPTS[a33];
+[0:v]trim=1386.851:1404.34,setpts=0.25*(PTS-STARTPTS)[tv34]; 
+[1:a]atrim=103.10674999999995:107.4789999999999,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=3.8722499999999513,asetpts=PTS-STARTPTS[ta34]; 
+[0:v]trim=1404.34:1410.841,setpts=PTS-STARTPTS[v35]; 
+[0:a]atrim=1404.34:1410.841,asetpts=PTS-STARTPTS[a35];
+[0:v]trim=1410.841:1420.349,setpts=0.25*(PTS-STARTPTS)[tv36]; 
+[1:a]atrim=108.4789999999999:110.85599999999991,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.8770000000000095,asetpts=PTS-STARTPTS[ta36]; 
+[0:v]trim=1420.349:1436.133,setpts=PTS-STARTPTS[v37]; 
+[0:a]atrim=1420.349:1436.133,asetpts=PTS-STARTPTS[a37];
+[0:v]trim=1436.133:1447.31,setpts=0.25*(PTS-STARTPTS)[tv38]; 
+[1:a]atrim=111.85599999999991:114.65024999999989,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.294249999999977,asetpts=PTS-STARTPTS[ta38]; 
+[0:v]trim=1447.31:1461.459,setpts=PTS-STARTPTS[v39]; 
+[0:a]atrim=1447.31:1461.459,asetpts=PTS-STARTPTS[a39];
+[0:v]trim=1461.459:1471.8,setpts=0.25*(PTS-STARTPTS)[tv40]; 
+[1:a]atrim=115.65024999999989:118.23549999999986,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.0852499999999736,asetpts=PTS-STARTPTS[ta40]; 
+[0:v]trim=1471.8:1502.633,setpts=PTS-STARTPTS[v41]; 
+[0:a]atrim=1471.8:1502.633,asetpts=PTS-STARTPTS[a41];
+[0:v]trim=1502.633:1511.54,setpts=0.25*(PTS-STARTPTS)[tv42]; 
+[1:a]atrim=119.23549999999986:121.46224999999984,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.7267499999999814,asetpts=PTS-STARTPTS[ta42]; 
+[0:v]trim=1511.54:1595.125,setpts=PTS-STARTPTS[v43]; 
+[0:a]atrim=1511.54:1595.125,asetpts=PTS-STARTPTS[a43];
+[0:v]trim=1595.125:1605.234,setpts=0.25*(PTS-STARTPTS)[tv44]; 
+[1:a]atrim=122.46224999999984:124.98949999999982,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.027249999999981,asetpts=PTS-STARTPTS[ta44]; 
+[0:v]trim=1605.234:2118.148,setpts=PTS-STARTPTS[v45]; 
+[0:a]atrim=1605.234:2118.148,asetpts=PTS-STARTPTS[a45];
+[0:v]trim=2118.148:2127.123,setpts=0.25*(PTS-STARTPTS)[tv46]; 
+[1:a]atrim=125.98949999999982:128.2332499999998,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.7437499999999773,asetpts=PTS-STARTPTS[ta46]; 
+[0:v]trim=2127.123:2128.858,setpts=PTS-STARTPTS[v47]; 
+[0:a]atrim=2127.123:2128.858,asetpts=PTS-STARTPTS[a47];
+[0:v]trim=2128.858:2143.72,setpts=0.25*(PTS-STARTPTS)[tv48]; 
+[1:a]atrim=129.2332499999998:132.9487499999997,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=3.2154999999999063,asetpts=PTS-STARTPTS[ta48]; 
+[0:v]trim=2143.72:2186.85,setpts=PTS-STARTPTS[v49]; 
+[0:a]atrim=2143.72:2186.85,asetpts=PTS-STARTPTS[a49];
+[0:v]trim=2186.85:2200.429,setpts=0.25*(PTS-STARTPTS)[tv50]; 
+[1:a]atrim=133.9487499999997:137.34349999999975,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.8947500000000446,asetpts=PTS-STARTPTS[ta50]; 
+[0:v]trim=2200.429:2295.358,setpts=PTS-STARTPTS[v51]; 
+[0:a]atrim=2200.429:2295.358,asetpts=PTS-STARTPTS[a51];
+[0:v]trim=2295.358:2305.34,setpts=0.25*(PTS-STARTPTS)[tv52]; 
+[1:a]atrim=138.34349999999975:140.83899999999974,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.9954999999999927,asetpts=PTS-STARTPTS[ta52]; 
+[0:v]trim=2305.34:2346.408,setpts=PTS-STARTPTS[v53]; 
+[0:a]atrim=2305.34:2346.408,asetpts=PTS-STARTPTS[a53];
+[0:v]trim=2346.408:2358.753,setpts=0.25*(PTS-STARTPTS)[tv54]; 
+[1:a]atrim=141.83899999999974:144.9252499999998,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.5862500000000637,asetpts=PTS-STARTPTS[ta54]; 
+[0:v]trim=2358.753:2498.194,setpts=PTS-STARTPTS[v55]; 
+[0:a]atrim=2358.753:2498.194,asetpts=PTS-STARTPTS[a55];
+[0:v]trim=2498.194:2509.606,setpts=0.25*(PTS-STARTPTS)[tv56]; 
+[1:a]atrim=145.9252499999998:148.77824999999987,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.3530000000000655,asetpts=PTS-STARTPTS[ta56]; 
+[0:v]trim=2509.606:2615.177,setpts=PTS-STARTPTS[v57]; 
+[0:a]atrim=2509.606:2615.177,asetpts=PTS-STARTPTS[a57];
+[0:v]trim=2615.177:2639.335,setpts=0.25*(PTS-STARTPTS)[tv58]; 
+[1:a]atrim=149.77824999999987:155.81774999999985,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=5.039499999999975,asetpts=PTS-STARTPTS[ta58]; 
+[0:v]trim=2639.335:2984.547,setpts=PTS-STARTPTS[v59]; 
+[0:a]atrim=2639.335:2984.547,asetpts=PTS-STARTPTS[a59];
+[0:v]trim=2984.547:2997.192,setpts=0.25*(PTS-STARTPTS)[tv60]; 
+[1:a]atrim=156.81774999999985:159.97899999999984,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.6612499999999955,asetpts=PTS-STARTPTS[ta60]; 
+[0:v]trim=2997.192:3144.606,setpts=PTS-STARTPTS[v61]; 
+[0:a]atrim=2997.192:3144.606,asetpts=PTS-STARTPTS[a61];
+[0:v]trim=3144.606:3152.81,setpts=0.25*(PTS-STARTPTS)[tv62]; 
+[1:a]atrim=160.97899999999984:163.02999999999977,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.0509999999999309,asetpts=PTS-STARTPTS[ta62]; 
+[0:v]trim=3152.81:3227.623,setpts=PTS-STARTPTS[v63]; 
+[0:a]atrim=3152.81:3227.623,asetpts=PTS-STARTPTS[a63];
+[0:v]trim=3227.623:3242.737,setpts=0.25*(PTS-STARTPTS)[tv64]; 
+[1:a]atrim=164.02999999999977:167.80849999999978,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=3.278500000000008,asetpts=PTS-STARTPTS[ta64]; 
+[0:v]trim=3242.737:3351.413,setpts=PTS-STARTPTS[v65]; 
+[0:a]atrim=3242.737:3351.413,asetpts=PTS-STARTPTS[a65];
+[0:v]trim=3351.413:3370.599,setpts=0.25*(PTS-STARTPTS)[tv66]; 
+[1:a]atrim=168.80849999999978:173.60499999999982,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=4.296500000000037,asetpts=PTS-STARTPTS[ta66]; 
+[0:v]trim=3370.599:3783.31,setpts=PTS-STARTPTS[v67]; 
+[0:a]atrim=3370.599:3783.31,asetpts=PTS-STARTPTS[a67];
+[0:v]trim=3783.31:3796.356,setpts=0.25*(PTS-STARTPTS)[tv68]; 
+[1:a]atrim=174.60499999999982:177.8664999999999,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.761500000000069,asetpts=PTS-STARTPTS[ta68]; 
+[0:v]trim=3796.356:3912.44,setpts=PTS-STARTPTS[v69]; 
+[0:a]atrim=3796.356:3912.44,asetpts=PTS-STARTPTS[a69];
+[0:v]trim=3912.44:3920.847,setpts=0.25*(PTS-STARTPTS)[tv70]; 
+[1:a]atrim=178.8664999999999:180.96824999999993,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.6017500000000382,asetpts=PTS-STARTPTS[ta70]; 
+[0:v]trim=3920.847:3983.377,setpts=PTS-STARTPTS[v71]; 
+[0:a]atrim=3920.847:3983.377,asetpts=PTS-STARTPTS[a71];
+[0:v]trim=3983.377:3995.155,setpts=0.25*(PTS-STARTPTS)[tv72]; 
+[1:a]atrim=181.96824999999993:184.91275,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.444500000000062,asetpts=PTS-STARTPTS[ta72]; 
+[0:v]trim=3995.155:4050.445,setpts=PTS-STARTPTS[v73]; 
+[0:a]atrim=3995.155:4050.445,asetpts=PTS-STARTPTS[a73];
+[0:v]trim=4050.445:4062.556,setpts=0.25*(PTS-STARTPTS)[tv74]; 
+[1:a]atrim=185.91275:188.94049999999996,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.527749999999969,asetpts=PTS-STARTPTS[ta74]; 
+[0:v]trim=4062.556:4064.92,setpts=PTS-STARTPTS[v75]; 
+[0:a]atrim=4062.556:4064.92,asetpts=PTS-STARTPTS[a75];
+[0:v]trim=4064.92:4073.434,setpts=0.25*(PTS-STARTPTS)[tv76]; 
+[1:a]atrim=189.94049999999996:192.069,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.628500000000031,asetpts=PTS-STARTPTS[ta76]; 
+[0:v]trim=4073.434:4074.602,setpts=PTS-STARTPTS[v77]; 
+[0:a]atrim=4073.434:4074.602,asetpts=PTS-STARTPTS[a77];
+[0:v]trim=4074.602:4101.295,setpts=0.25*(PTS-STARTPTS)[tv78]; 
+[1:a]atrim=193.069:199.74225000000004,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=5.673250000000053,asetpts=PTS-STARTPTS[ta78]; 
+[0:v]trim=4101.295:4103.498,setpts=PTS-STARTPTS[v79]; 
+[0:a]atrim=4101.295:4103.498,asetpts=PTS-STARTPTS[a79];
+[0:v]trim=4103.498:4114.7,setpts=0.25*(PTS-STARTPTS)[tv80]; 
+[1:a]atrim=200.74225000000004:203.5427500000001,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.3005000000000564,asetpts=PTS-STARTPTS[ta80]; 
+[0:v]trim=4114.7:4177.438,setpts=PTS-STARTPTS[v81]; 
+[0:a]atrim=4114.7:4177.438,asetpts=PTS-STARTPTS[a81];
+[0:v]trim=4177.438:4206.367,setpts=0.25*(PTS-STARTPTS)[tv82]; 
+[1:a]atrim=204.5427500000001:211.77500000000012,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=6.232250000000022,asetpts=PTS-STARTPTS[ta82]; 
+[0:v]trim=4206.367:4268.93,setpts=PTS-STARTPTS[v83]; 
+[0:a]atrim=4206.367:4268.93,asetpts=PTS-STARTPTS[a83];
+[0:v]trim=4268.93:4281.975,setpts=0.25*(PTS-STARTPTS)[tv84]; 
+[1:a]atrim=212.77500000000012:216.03625000000014,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.761250000000018,asetpts=PTS-STARTPTS[ta84]; 
+[0:v]trim=4281.975:4283.577,setpts=PTS-STARTPTS[v85]; 
+[0:a]atrim=4281.975:4283.577,asetpts=PTS-STARTPTS[a85];
+[0:v]trim=4283.577:4300.261,setpts=0.25*(PTS-STARTPTS)[tv86]; 
+[1:a]atrim=217.03625000000014:221.2072500000002,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=3.671000000000049,asetpts=PTS-STARTPTS[ta86]; 
+[0:v]trim=4300.261:4302.463,setpts=PTS-STARTPTS[v87]; 
+[0:a]atrim=4300.261:4302.463,asetpts=PTS-STARTPTS[a87];
+[0:v]trim=4302.463:4342.336,setpts=0.25*(PTS-STARTPTS)[tv88]; 
+[1:a]atrim=222.2072500000002:232.1755000000003,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=8.968250000000126,asetpts=PTS-STARTPTS[ta88]; 
+[0:v]trim=4342.336:4351.778,setpts=PTS-STARTPTS[v89]; 
+[0:a]atrim=4342.336:4351.778,asetpts=PTS-STARTPTS[a89];
+[0:v]trim=4351.778:4366.827,setpts=0.25*(PTS-STARTPTS)[tv90]; 
+[1:a]atrim=233.1755000000003:236.9377500000003,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=3.2622499999999945,asetpts=PTS-STARTPTS[ta90]; 
+[0:v]trim=4366.827:4368.896,setpts=PTS-STARTPTS[v91]; 
+[0:a]atrim=4366.827:4368.896,asetpts=PTS-STARTPTS[a91];
+[0:v]trim=4368.896:4380.573,setpts=0.25*(PTS-STARTPTS)[tv92]; 
+[1:a]atrim=237.9377500000003:240.85700000000045,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.4192500000001473,asetpts=PTS-STARTPTS[ta92]; 
+[0:v]trim=4380.573:4435.797,setpts=PTS-STARTPTS[v93]; 
+[0:a]atrim=4380.573:4435.797,asetpts=PTS-STARTPTS[a93];
+[0:v]trim=4435.797:4444.604,setpts=0.25*(PTS-STARTPTS)[tv94]; 
+[1:a]atrim=241.85700000000045:244.05875000000063,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.7017500000001746,asetpts=PTS-STARTPTS[ta94]; 
+[0:v]trim=4444.604:4555.983,setpts=PTS-STARTPTS[v95]; 
+[0:a]atrim=4444.604:4555.983,asetpts=PTS-STARTPTS[a95];
+[0:v]trim=4555.983:4564.692,setpts=0.25*(PTS-STARTPTS)[tv96]; 
+[1:a]atrim=245.05875000000063:247.2360000000006,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.6772499999999582,asetpts=PTS-STARTPTS[ta96]; 
+[0:v]trim=4564.692:4574.969,setpts=PTS-STARTPTS[v97]; 
+[0:a]atrim=4564.692:4574.969,asetpts=PTS-STARTPTS[a97];
+[0:v]trim=4574.969:4583.676,setpts=0.25*(PTS-STARTPTS)[tv98]; 
+[1:a]atrim=248.2360000000006:250.41275000000067,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.6767500000000837,asetpts=PTS-STARTPTS[ta98]; 
+[0:v]trim=4583.676:4643.938,setpts=PTS-STARTPTS[v99]; 
+[0:a]atrim=4583.676:4643.938,asetpts=PTS-STARTPTS[a99];
+[0:v]trim=4643.938:4654.814,setpts=0.25*(PTS-STARTPTS)[tv100]; 
+[1:a]atrim=251.41275000000067:254.13175000000072,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.219000000000051,asetpts=PTS-STARTPTS[ta100]; 
+[0:v]trim=4654.814:4657.18,setpts=PTS-STARTPTS[v101]; 
+[0:a]atrim=4654.814:4657.18,asetpts=PTS-STARTPTS[a101];
+[0:v]trim=4657.18:4699.426,setpts=0.25*(PTS-STARTPTS)[tv102]; 
+[1:a]atrim=255.13175000000072:265.6932500000007,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=9.561500000000024,asetpts=PTS-STARTPTS[ta102]; 
+[0:v]trim=4699.426:4707.999,setpts=PTS-STARTPTS[v103]; 
+[0:a]atrim=4699.426:4707.999,asetpts=PTS-STARTPTS[a103];
+[0:v]trim=4707.999:4727.554,setpts=0.25*(PTS-STARTPTS)[tv104]; 
+[1:a]atrim=266.6932500000007:271.5820000000008,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=4.388750000000073,asetpts=PTS-STARTPTS[ta104]; 
+[0:v]trim=4727.554:4822.115,setpts=PTS-STARTPTS[v105]; 
+[0:a]atrim=4727.554:4822.115,asetpts=PTS-STARTPTS[a105];
+[0:v]trim=4822.115:4832.326,setpts=0.25*(PTS-STARTPTS)[tv106]; 
+[1:a]atrim=272.5820000000008:275.13475000000085,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.05275000000006,asetpts=PTS-STARTPTS[ta106]; 
+[0:v]trim=4832.326:4889.917,setpts=PTS-STARTPTS[v107]; 
+[0:a]atrim=4832.326:4889.917,asetpts=PTS-STARTPTS[a107];
+[0:v]trim=4889.917:4900.627,setpts=0.25*(PTS-STARTPTS)[tv108]; 
+[1:a]atrim=276.13475000000085:278.81225000000086,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.177500000000009,asetpts=PTS-STARTPTS[ta108]; 
+[0:v]trim=4900.627:4958.685,setpts=PTS-STARTPTS[v109]; 
+[0:a]atrim=4900.627:4958.685,asetpts=PTS-STARTPTS[a109];
+[0:v]trim=4958.685:4968.162,setpts=0.25*(PTS-STARTPTS)[tv110]; 
+[1:a]atrim=279.81225000000086:282.1815000000008,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.8692499999999654,asetpts=PTS-STARTPTS[ta110]; 
+[0:v]trim=4968.162:5092.485,setpts=PTS-STARTPTS[v111]; 
+[0:a]atrim=4968.162:5092.485,asetpts=PTS-STARTPTS[a111];
+[0:v]trim=5092.485:5109.636,setpts=0.25*(PTS-STARTPTS)[tv112]; 
+[1:a]atrim=283.1815000000008:287.469250000001,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=3.7877500000001874,asetpts=PTS-STARTPTS[ta112]; 
+[0:v]trim=5109.636:5245.439,setpts=PTS-STARTPTS[v113]; 
+[0:a]atrim=5109.636:5245.439,asetpts=PTS-STARTPTS[a113];
+[0:v]trim=5245.439:5255.881,setpts=0.25*(PTS-STARTPTS)[tv114]; 
+[1:a]atrim=288.469250000001:291.079750000001,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.110500000000002,asetpts=PTS-STARTPTS[ta114]; 
+[0:v]trim=5255.881:5366.96,setpts=PTS-STARTPTS[v115]; 
+[0:a]atrim=5255.881:5366.96,asetpts=PTS-STARTPTS[a115];
+[0:v]trim=5366.96:5379.84,setpts=0.25*(PTS-STARTPTS)[tv116]; 
+[1:a]atrim=292.079750000001:295.29975000000104,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=2.7200000000000273,asetpts=PTS-STARTPTS[ta116]; 
+[0:v]trim=5379.84:5381.375,setpts=PTS-STARTPTS[v117]; 
+[0:a]atrim=5379.84:5381.375,asetpts=PTS-STARTPTS[a117];
+[0:v]trim=5381.375:5390.48,setpts=0.25*(PTS-STARTPTS)[tv118]; 
+[1:a]atrim=296.29975000000104:298.57600000000093,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.7762499999998909,asetpts=PTS-STARTPTS[ta118]; 
+[0:v]trim=5390.48:5602.662,setpts=PTS-STARTPTS[v119]; 
+[0:a]atrim=5390.48:5602.662,asetpts=PTS-STARTPTS[a119];
+[0:v]trim=5602.662:6097.122,setpts=0.25*(PTS-STARTPTS)[tv120]; 
+[1:a]atrim=299.57600000000093:423.19100000000094,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=122.61500000000001,asetpts=PTS-STARTPTS[ta120]; 
+[0:v]
+   trim=6097.122,
+   setpts=PTS-STARTPTS
+[v121]; 
+
+[0:a]
+   atrim=6097.122,
+   asetpts=PTS-STARTPTS
+[a121];
+[2:v] 
+  drawtext=fontfile='/home/theapache64/Documents/projects/auto-motion/lab/komikax.ttf':fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h-text_h)/2:text='Thank You!', 
+  drawtext=fontfile='/home/theapache64/Documents/projects/auto-motion/lab/komikax.ttf':fontsize=15:fontcolor=gray:x=(w-text_w)/2:y=(h+text_h)/2:text='theapache64' 
+[cv];
+[1:a]atrim=424.19100000000094:426.19100000000094,asetpts=PTS-STARTPTS,afade=t=in:d=1,afade=t=out:st=1.8,asetpts=PTS-STARTPTS[ca]; 
+[v1][a1][tv2][ta2][v3][a3][tv4][ta4][v5][a5][tv6][ta6][v7][a7][tv8][ta8][v9][a9][tv10][ta10][v11][a11][tv12][ta12][v13][a13][tv14][ta14][v15][a15][tv16][ta16][v17][a17][tv18][ta18][v19][a19][tv20][ta20][v21][a21][tv22][ta22][v23][a23][tv24][ta24][v25][a25][tv26][ta26][v27][a27][tv28][ta28][v29][a29][tv30][ta30][v31][a31][tv32][ta32][v33][a33][tv34][ta34][v35][a35][tv36][ta36][v37][a37][tv38][ta38][v39][a39][tv40][ta40][v41][a41][tv42][ta42][v43][a43][tv44][ta44][v45][a45][tv46][ta46][v47][a47][tv48][ta48][v49][a49][tv50][ta50][v51][a51][tv52][ta52][v53][a53][tv54][ta54][v55][a55][tv56][ta56][v57][a57][tv58][ta58][v59][a59][tv60][ta60][v61][a61][tv62][ta62][v63][a63][tv64][ta64][v65][a65][tv66][ta66][v67][a67][tv68][ta68][v69][a69][tv70][ta70][v71][a71][tv72][ta72][v73][a73][tv74][ta74][v75][a75][tv76][ta76][v77][a77][tv78][ta78][v79][a79][tv80][ta80][v81][a81][tv82][ta82][v83][a83][tv84][ta84][v85][a85][tv86][ta86][v87][a87][tv88][ta88][v89][a89][tv90][ta90][v91][a91][tv92][ta92][v93][a93][tv94][ta94][v95][a95][tv96][ta96][v97][a97][tv98][ta98][v99][a99][tv100][ta100][v101][a101][tv102][ta102][v103][a103][tv104][ta104][v105][a105][tv106][ta106][v107][a107][tv108][ta108][v109][a109][tv110][ta110][v111][a111][tv112][ta112][v113][a113][tv114][ta114][v115][a115][tv116][ta116][v117][a117][tv118][ta118][v119][a119][tv120][ta120][v121][a121]concat=
+    n=121
+    :v=1
+    :a=1
+    [woiv][woia];[woiv]
+    drawtext=
+        fontfile='/home/theapache64/Documents/projects/auto-motion/lab/komikax.ttf'
+        :text='theapache64'
+        :fontcolor=white
+        :fontsize=24
+        :box=1
+        :boxcolor=black@0.5
+        :boxborderw=10
+        :x=(w-text_w-10)
+        :y=(h-text_h-(text_h/2))
+[woivw];
+[vi][ai]
+[woivw][woia]
+[cv][ca]
+    concat=n=3:v=1:a=1" \
+-preset superfast "/home/theapache64/Documents/projects/auto-motion/lab/auto_movie.mkv"

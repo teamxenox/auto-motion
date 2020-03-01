@@ -46,6 +46,7 @@ object Main {
                     val isKeepSh = cp.isKeepSh()
                     val isRawFFmpeg = cp.isRawFFmpeg()
                     val rawSrt = cp.getRawSrt()
+                    val defaultSrt = cp.getDefaultSrt(inputVideos.first())
 
                     // Checking if there's multiple videos
                     val inputVideo = if (inputVideos.size > 1) {
@@ -57,18 +58,32 @@ object Main {
                         inputVideos.first()
                     }
 
-                    // Downloading subtitles
 
-                    val autoSubNodes = if (rawSrt == null) {
-                        println("\uD83D\uDD0A Analyzing audio stream... ")
-                        val subNodes = AutoSubUtils.getSubFor(inputVideo, videoLanguage)
-                        println("✔️ Audio analysis finished")
-                        subNodes
-                    } else {
-                        println("\uD83D\uDD0A Analyzing subtitles ... ")
-                        val subNodes = AutoSubUtils.getSubFromSrt(rawSrt)
-                        println("✔️ Subtitle analysis finished")
-                        subNodes
+                    // Downloading subtitles
+                    val autoSubNodes = when {
+
+                        rawSrt != null -> {
+                            println("\uD83D\uDD0A Analyzing subtitles ... ")
+                            val subNodes = AutoSubUtils.getSubFromSrt(rawSrt)
+                            println("✔️ Subtitle analysis finished")
+                            subNodes
+
+                        }
+                        defaultSrt != null -> {
+                            require(inputVideos.size == 1) { "Default subtitle option can't be used with multiple input video files." }
+                            println("\uD83D\uDD0A Analyzing default subtitles... ")
+                            val subNodes = AutoSubUtils.getSubFromSrt(defaultSrt)
+                            println("✔️ Subtitle analysis finished (default)")
+                            subNodes
+                        }
+
+                        else -> {
+                            // use autosub as last resort
+                            println("\uD83D\uDD0A Analyzing audio stream... ")
+                            val subNodes = AutoSubUtils.getSubFor(inputVideo, videoLanguage)
+                            println("✔️ Audio analysis finished")
+                            subNodes
+                        }
                     }
 
                     println("\uD83C\uDFA5 Analyzing video stream...")
@@ -151,7 +166,7 @@ object Main {
                         println("↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️")
                     }
 
-                    val commandSh = File("${inputVideo.name}.sh")
+                    val commandSh = File("${inputVideo.parentFile.absolutePath}/${inputVideo.name}.sh")
                     commandSh.delete()
                     commandSh.writeText(command)
                     println("\uD83D\uDCBE Command saved to ${commandSh.absolutePath}")

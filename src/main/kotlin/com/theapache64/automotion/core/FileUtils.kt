@@ -42,9 +42,35 @@ object FileUtils {
      * second = height
      */
     fun getDimension(videoFile: File): Pair<Int, Int> {
+        val command = "ffprobe -v error -show_entries stream=width,height -of csv=p=0:s=x \"${videoFile.absolutePath}\""
+        println(command)
         val result =
-            SimpleCommandExecutor.executeCommand("ffprobe -v error -show_entries stream=width,height -of csv=p=0:s=x \"${videoFile.absolutePath}\"")
-        val widthHeight = result.split("x")
+            SimpleCommandExecutor.executeCommand(command)
+        val widthHeight = result.trim().split("\n")[0].split("x")
         return Pair(widthHeight[0].trim().toInt(), widthHeight[1].trim().toInt())
+    }
+
+    fun parseSubTitle(inputFile: File): File? {
+
+        return if (hasSubTitle(inputFile)) {
+            val subTitleFilePath = "${inputFile.parentFile.absolutePath}/${inputFile.nameWithoutExtension}.srt"
+            val command =
+                "ffmpeg -y -i \"${inputFile.absolutePath}\" -map 0:s:0 \"$subTitleFilePath\""
+            SimpleCommandExecutor.executeCommand(command, false, true, true)
+            val subTitleFile = File(subTitleFilePath)
+
+            if (subTitleFile.exists()) {
+                subTitleFile
+            } else {
+                null
+            }
+
+        } else {
+            null
+        }
+    }
+
+    fun hasSubTitle(inputFile: File): Boolean {
+        return SimpleCommandExecutor.executeCommand("ffmpeg -i \"${inputFile.absolutePath}\" -c copy -map 0:s -f null - -v 0 -hide_banner && echo \$? || echo \$?\n") == "0"
     }
 }
