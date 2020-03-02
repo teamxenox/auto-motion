@@ -400,7 +400,10 @@ class CommandCook(
             $program -y \
                 -i "${inputVideo.absolutePath}" \
                 -i "${bgm.absolutePath}" \
-                -f lavfi -i color=c=$bgColor:s="${videoDimens.first}"x"${videoDimens.second}":d=$introDuration \
+                -f lavfi -i color=c=$bgColor:s="${videoDimens.width}"x"${videoDimens.height}":sar=${videoDimens.sampleAspectRatio.replace(
+                ":",
+                "/"
+            )}:d=$introDuration \
                 -filter_complex \
                     "
         """.trimIndent()

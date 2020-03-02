@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken
 import com.theapache64.automotion.core.srtparser.SrtParser
 import com.theapache64.automotion.models.AutoSubNode
 import com.theapache64.automotion.utils.ComplexCommandExecutor
+import com.theapache64.automotion.utils.GsonUtils
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -13,7 +14,6 @@ import java.io.FileNotFoundException
  */
 object AutoSubUtils {
 
-    private val gson = Gson()
     private val OUTPUT_REGEX = "Subtitles file created at (.+)".toRegex()
 
     /**
@@ -51,7 +51,7 @@ object AutoSubUtils {
     fun parseJson(jsonSubFile: File, videoDuration: Double): List<AutoSubNode> {
         val jsonString = jsonSubFile.readText()
         val typeToken = object : TypeToken<List<AutoSubNode>>() {}.type
-        val subNodes = gson.fromJson<MutableList<AutoSubNode>>(jsonString, typeToken)
+        val subNodes = GsonUtils.gson.fromJson<MutableList<AutoSubNode>>(jsonString, typeToken)
 
         // adding video end
         subNodes.add(AutoSubNode("", videoDuration, videoDuration))

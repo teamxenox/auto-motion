@@ -1,9 +1,11 @@
 package com.theapache64.automotion.core
 
+import com.theapache64.automotion.models.FFProbeOutput
+import com.theapache64.automotion.models.VideoMeta
+import com.theapache64.automotion.utils.GsonUtils
 import com.theapache64.automotion.utils.SimpleCommandExecutor
 import java.io.File
 import java.io.FileNotFoundException
-import java.io.IOException
 
 /**
  * Operations related to files
@@ -41,13 +43,13 @@ object FileUtils {
      * first = width
      * second = height
      */
-    fun getDimension(videoFile: File): Pair<Int, Int> {
-        val command = "ffprobe -v error -show_entries stream=width,height -of csv=p=0:s=x \"${videoFile.absolutePath}\""
-        println(command)
-        val result =
+    fun getDimension(videoFile: File): VideoMeta {
+        val command =
+            "ffprobe -v error -select_streams v:0 -show_entries stream=width,height,duration,sample_aspect_ratio -print_format json=c=1 \"${videoFile.absolutePath}\""
+        val jsonString =
             SimpleCommandExecutor.executeCommand(command)
-        val widthHeight = result.trim().split("\n")[0].split("x")
-        return Pair(widthHeight[0].trim().toInt(), widthHeight[1].trim().toInt())
+        val ffProbeOutput = GsonUtils.gson.fromJson(jsonString, FFProbeOutput::class.java)
+        return ffProbeOutput.streams.first()
     }
 
     fun parseSubTitle(inputFile: File): File? {

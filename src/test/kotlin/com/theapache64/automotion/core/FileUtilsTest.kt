@@ -24,12 +24,14 @@ class FileUtilsTest {
 
     @Test
     fun getDimensionSuccess() {
-        FileUtils.getDimension(File("lab/lion.mp4")).toString().should.equal("(1280, 720)")
+        val videoMeta = FileUtils.getDimension(File("lab/lion.mp4"))
+        videoMeta.width.should.equal(1280)
+        videoMeta.height.should.equal(720)
     }
 
     @Test
     fun getDimensionMovieSuccess() {
-        FileUtils.getDimension(File("lab/movie.mkv")).toString().should.equal("(1280, 544)")
+        FileUtils.getDimension(File("lab/movie.mkv")).toString().should.equal("VideoMeta(duration=0.0, height=544, sampleAspectRatio=68:67, width=1280)")
     }
 
     @Test

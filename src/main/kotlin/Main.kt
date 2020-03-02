@@ -98,7 +98,7 @@ object Main {
                     println("\uD83C\uDFB8 Analyzing BGM...")
                     val bgmAgent = BgmAgent(
                         bgmFiles,
-                        subReport.totalTimelapseDuration,
+                        subReport.totalTimelapseDuration + introDuration + creditsDuration,
                         false
                     )
                     println("✔️ BGM analysis finished")
@@ -184,7 +184,7 @@ object Main {
                         isClearAfterFinish = true
                     )
                     println("✔️ Commands executed")
-                    println("\uD83C\uDF89 File saved to ${commandCook.outputFileName}")
+                    println("\uD83C\uDF89 File saved to file://${commandCook.outputFileName}")
                     if (!isKeepSh) {
                         commandSh.delete()
                     }

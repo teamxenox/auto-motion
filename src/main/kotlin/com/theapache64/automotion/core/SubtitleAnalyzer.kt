@@ -54,6 +54,8 @@ class SubtitleAnalyzer(
             prevNode = subNode
         }
 
+        println("Total timelapse duration is $totalTimelapseDuration")
+
         return SubtitleReport(totalTimelapseDuration, timelapses, nonTimelapseDurations)
     }
 
