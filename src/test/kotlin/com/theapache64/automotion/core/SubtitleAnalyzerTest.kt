@@ -17,22 +17,22 @@ class SubtitleAnalyzerTest {
 
         val report = SubtitleAnalyzer(
             subtitles,
-            CommandParser.DEFAULT_MIN_TIMELAPSE_SRC_LENGTH.toDouble(),
+            CommandParser.DEFAULT_MIN_TIMELAPSE_SRC_LENGTH,
             CommandParser.DEFAULT_TIMELAPSE_SPEED,
             CommandParser.DEFAULT_INTRO_DURATION
         ).getReport()
 
         val timelapses = report.timelapses
         timelapses.size.should.equal(4)
-        timelapses.first().srcDuration.should.equal(20.toDouble())
-        timelapses.first().targetDuration.should.equal(5.toDouble())
+        timelapses.first().srcDuration.should.equal(15.0)
+        timelapses.first().targetDuration.should.equal(3.75)
     }
 
 
     @Test
     fun testTargetStartEndSuccess() {
 
-        val jsonFile = File("lab/lion.json")
+        val jsonFile = File("lab/lion_2.json")
         val videoFile = File("lab/lion.mp4")
         val videoDuration = FileUtils.getDuration(videoFile)
         val subtitles = AutoSubUtils.parseJson(jsonFile, videoDuration)
@@ -95,7 +95,7 @@ class SubtitleAnalyzerTest {
     @Test
     fun testCalculationLion() {
 
-        val jsonFile = File("lab/lion.json")
+        val jsonFile = File("lab/lion_2.json")
         val videoFile = File("lab/lion.mp4")
 
         val subtitles = AutoSubUtils.parseJson(jsonFile, FileUtils.getDuration(videoFile))
