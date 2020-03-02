@@ -69,6 +69,7 @@ object Main {
                             subNodes
 
                         }
+
                         defaultSrt != null -> {
                             require(inputVideos.size == 1) { "Default subtitle option can't be used with multiple input video files." }
                             println("\uD83D\uDD0A Analyzing default subtitles... ")
@@ -166,7 +167,7 @@ object Main {
                         println("↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️↔️")
                     }
 
-                    val commandSh = File("${inputVideo.parentFile.absolutePath}/${inputVideo.name}.sh")
+                    val commandSh = File("${inputVideo.absoluteFile.parentFile.absolutePath}/${inputVideo.name}.sh")
                     commandSh.delete()
                     commandSh.writeText(command)
                     println("\uD83D\uDCBE Command saved to ${commandSh.absolutePath}")

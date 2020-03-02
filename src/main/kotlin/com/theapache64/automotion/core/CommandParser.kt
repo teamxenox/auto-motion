@@ -499,7 +499,13 @@ class CommandParser(
 
     fun getDefaultSrt(inputFile: File): File? {
         return if (cli.hasOption(OPT_DEFAULT_SRT)) {
-            val defaultSrt = File(inputFile.parentFile.absolutePath + inputFile.nameWithoutExtension + ".srt")
+
+            val srtPath =
+                inputFile.absoluteFile.parentFile.absolutePath + File.separator + inputFile.nameWithoutExtension + ".srt"
+
+            val defaultSrt =
+                File(srtPath)
+
             if (defaultSrt.exists()) {
                 defaultSrt
             } else {
