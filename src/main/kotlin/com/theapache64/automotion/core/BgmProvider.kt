@@ -11,17 +11,17 @@ class BgmProvider(
 ) {
 
     private var totalDuration = FileUtils.getDuration(bgmFile)
-    private var currentPos = 0.0
+    private var cursorAt = 0.0
 
     /**
      * To get bgm interval for the specified duration
      */
     fun getBgm(duration: Double): BgmNode {
-        val start = currentPos
+        val start = cursorAt
         val end = start + duration
-        require(end < totalDuration) { "DurationOutOfBound : available=$totalDuration, requested : $end" }
+        require(end < totalDuration) { "DurationOutOfBound : available='$totalDuration', requested : '$end'" }
         val interval = Pair(start, end)
-        currentPos = end + 1
+        cursorAt = end
         return BgmNode(interval)
     }
 }

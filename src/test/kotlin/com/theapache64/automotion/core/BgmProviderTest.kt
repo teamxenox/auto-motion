@@ -92,6 +92,7 @@ class BgmProviderTest {
         bgm3.interval.first.should.equal(37.0)
         bgm3.interval.second.should.equal(97.0)
 
+
         val bgm4 = bgmProvider.getBgm(10.5)
         bgm4.interval.first.should.equal(98.0)
         bgm4.interval.second.should.equal(108.5)
