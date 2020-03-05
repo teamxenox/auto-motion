@@ -102,7 +102,7 @@ class SubtitleAnalyzerTest {
 
         val report = SubtitleAnalyzer(
             subtitles,
-            CommandParser.DEFAULT_MIN_TIMELAPSE_SRC_LENGTH.toDouble(),
+            CommandParser.DEFAULT_MIN_TIMELAPSE_SRC_LENGTH,
             CommandParser.DEFAULT_TIMELAPSE_SPEED,
             CommandParser.DEFAULT_INTRO_DURATION
         ).getReport()

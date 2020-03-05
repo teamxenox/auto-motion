@@ -158,8 +158,8 @@ class CommandCook(
             [$WITHOUT_INTRO_VIDEO_LABEL]
                 drawtext=
                     fontfile='${fontFile.absolutePath}'
-                    :text='$introTitle'
-                    :fontcolor=$titleColor
+                    :text='$watermark'
+                    :fontcolor=$watermarkTextColor
                     :fontsize=${watermarkFontSize}
                     :box=1
                     :boxcolor=$watermarkBgColor@$watermarkBgOpacity
