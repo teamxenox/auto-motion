@@ -46,6 +46,7 @@ object Main {
                     val isKeepSh = cp.isKeepSh()
                     val isRawFFmpeg = cp.isRawFFmpeg()
                     val rawSrt = cp.getRawSrt()
+                    val isSuperFast = cp.isSuperFast()
                     val defaultSrt = cp.getDefaultSrt(inputVideos.first())
 
                     // Checking if there's multiple videos
@@ -138,6 +139,7 @@ object Main {
                         fontFile,
                         bgColor,
                         isRawFFmpeg,
+                        isSuperFast,
                         highlightSection
                     )
 

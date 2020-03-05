@@ -70,6 +70,8 @@ class CommandParser(
         private const val OPT_KEEP_SH = "KS"
         private const val OPT_KEEP_SH_LONG = "keep-sh"
         private const val OPT_USE_RAW_FFMPEG = "RFMPG"
+        private const val OPT_IS_SUPER_FAST = "sf"
+        private const val OPT_IS_SUPER_FAST_LONG = "superfast"
         private const val OPT_USE_RAW_FFMPEG_LONG = "raw-ffmpeg"
         private const val OPT_RAW_SRT = "RSRT"
         private const val OPT_RAW_SRT_LONG = "raw-srt"
@@ -274,6 +276,12 @@ class CommandParser(
                 OPT_USE_RAW_FFMPEG_LONG,
                 false,
                 "To use ffmpeg rather than ffpb"
+            )
+            .addOption(
+                OPT_IS_SUPER_FAST,
+                OPT_IS_SUPER_FAST_LONG,
+                false,
+                "To make the ffmpeg encodig preset to superfast"
             )
             .addOption(
                 OPT_KEEP_SH,
@@ -518,5 +526,9 @@ class CommandParser(
 
     private fun parseSubTitleFrom(inputFile: File): File? {
         return FileUtils.parseSubTitle(inputFile)
+    }
+
+    fun isSuperFast(): Boolean {
+        return cli.hasOption(OPT_IS_SUPER_FAST)
     }
 }

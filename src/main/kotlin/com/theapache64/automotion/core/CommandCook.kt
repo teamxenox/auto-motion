@@ -37,6 +37,7 @@ class CommandCook(
     private val fontFile: File,
     private val bgColor: String,
     private val isRawFFmpeg: Boolean,
+    private val isSuperFast: Boolean,
     private val highlightSection: Pair<Double, Double>?
 ) {
 
@@ -125,7 +126,11 @@ class CommandCook(
         /**
          * TODO : Remove superfast after development
          */
-        sb.append("-preset superfast \"$outputFileName\"")
+        if (isSuperFast) {
+            sb.append("-preset superfast")
+        }
+
+        sb.append(" \"$outputFileName\"")
 
         return sb.toString();
     }
