@@ -1,6 +1,7 @@
 import com.theapache64.automotion.core.*
 import com.theapache64.automotion.utils.ComplexCommandExecutor
 import com.theapache64.automotion.utils.DateTimeUtils
+import com.theapache64.automotion.utils.InputUtils
 import java.io.File
 import java.lang.Exception
 import kotlin.system.exitProcess
@@ -47,7 +48,8 @@ object Main {
                     val isRawFFmpeg = cp.isRawFFmpeg()
                     val rawSrt = cp.getRawSrt()
                     val isSuperFast = cp.isSuperFast()
-                    val defaultSrt = cp.getDefaultSrt(inputVideos.first())
+                    var defaultSrt = cp.getDefaultSrt(inputVideos.first())
+
 
                     // Checking if there's multiple videos
                     val inputVideo = if (inputVideos.size > 1) {
@@ -59,6 +61,19 @@ object Main {
                         inputVideos.first()
                     }
 
+
+
+                    if (defaultSrt != null) {
+                        println("🤗 We've found a connected subtitle with the video, Do you want to proceed?")
+                        val isProceedWithDefault = InputUtils.getString(
+                            "y for YES and other for NO",
+                            true
+                        ).toLowerCase() == "y"
+
+                        if (isProceedWithDefault) {
+                            defaultSrt = null
+                        }
+                    }
 
                     // Downloading subtitles
                     val autoSubNodes = when {
@@ -189,6 +204,11 @@ object Main {
                     println("\uD83C\uDF89 File saved to file://${commandCook.outputFileName}")
                     if (!isKeepSh) {
                         commandSh.delete()
+                    }
+
+                    if (commandCook.highLightFile != null) {
+                        // Delete highlight video
+                        commandCook.highLightFile!!.deleteOnExit()
                     }
 
                     exitProcess(0)

@@ -76,9 +76,6 @@ class CommandParser(
         private const val OPT_RAW_SRT = "RSRT"
         private const val OPT_RAW_SRT_LONG = "raw-srt"
 
-        private const val OPT_DEFAULT_SRT = "DSRT"
-        private const val OPT_DEFAULT_SRT_LONG = "default-srt"
-
 
         /**
          * Default values
@@ -264,12 +261,6 @@ class CommandParser(
                 OPT_RAW_SRT_LONG,
                 true,
                 "To cancel autosub usage and use passed SRT file for timelapse calculation"
-            )
-            .addOption(
-                OPT_DEFAULT_SRT,
-                OPT_DEFAULT_SRT_LONG,
-                false,
-                "To cancel autosub usage and use default SRT of the input video file."
             )
             .addOption(
                 OPT_USE_RAW_FFMPEG,
@@ -506,21 +497,16 @@ class CommandParser(
     }
 
     fun getDefaultSrt(inputFile: File): File? {
-        return if (cli.hasOption(OPT_DEFAULT_SRT)) {
+        val srtPath =
+            inputFile.absoluteFile.parentFile.absolutePath + File.separator + inputFile.nameWithoutExtension + ".srt"
 
-            val srtPath =
-                inputFile.absoluteFile.parentFile.absolutePath + File.separator + inputFile.nameWithoutExtension + ".srt"
+        val defaultSrt =
+            File(srtPath)
 
-            val defaultSrt =
-                File(srtPath)
-
-            if (defaultSrt.exists()) {
-                defaultSrt
-            } else {
-                parseSubTitleFrom(inputFile)
-            }
+        return if (defaultSrt.exists()) {
+            defaultSrt
         } else {
-            null
+            parseSubTitleFrom(inputFile)
         }
     }
 

@@ -73,12 +73,12 @@ class CommandCook(
          * Create highlight vide
          *
          */
-        val highlightFile = createHighlightVideo()
+        createHighlightVideo()
 
         /**
          * Init ffmpeg command
          */
-        initCommand(highlightFile)
+        initCommand()
 
         /**
          * Adding highlight section to start of the video
@@ -140,11 +140,12 @@ class CommandCook(
         return sb.toString();
     }
 
+    var highLightFile: File? = null
     private fun createHighlightVideo(): File? {
         if (highlightSection != null) {
-            val highLightFile = File("${inputVideo.absoluteFile.parentFile.absolutePath}/highlight_${inputVideo.name}")
+            highLightFile = File("${inputVideo.absoluteFile.parentFile.absolutePath}/highlight_${inputVideo.name}")
             val highlightCommand =
-                "${getProgram()} -y -ss ${highlightSection.first} -to ${highlightSection.second} -i \"${inputVideo.absolutePath}\" -map 0:v -map 0:a '${highLightFile.absolutePath}' && \n"
+                "${getProgram()} -y -ss ${highlightSection.first} -to ${highlightSection.second} -i \"${inputVideo.absolutePath}\" -map 0:v -map 0:a '${highLightFile!!.absolutePath}' && \n"
             sb.append(highlightCommand)
             return highLightFile
         }
@@ -398,15 +399,15 @@ class CommandCook(
         }
     }
 
-    private fun initCommand(highlightVideo: File?) {
+    private fun initCommand() {
 
         val program = getProgram()
 
         val sar = videoDimens.sampleAspectRatio.replace(":", "/")
 
         var highlightVideoInput = ""
-        if (highlightVideo != null) {
-            highlightVideoInput = "-i \"${highlightVideo.absolutePath}\""
+        if (highLightFile != null) {
+            highlightVideoInput = "-i \"${highLightFile!!.absolutePath}\""
         }
 
         sb.append(

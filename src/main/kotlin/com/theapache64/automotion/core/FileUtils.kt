@@ -58,7 +58,12 @@ object FileUtils {
             val subTitleFilePath = "${inputFile.parentFile.absolutePath}/${inputFile.nameWithoutExtension}.srt"
             val command =
                 "ffmpeg -y -i \"${inputFile.absolutePath}\" -map 0:s:0 \"$subTitleFilePath\""
-            SimpleCommandExecutor.executeCommand(command, false, true, true)
+            SimpleCommandExecutor.executeCommand(
+                command,
+                isLivePrint = false,
+                isSuppressError = true,
+                isReturnAll = true
+            )
             val subTitleFile = File(subTitleFilePath)
 
             if (subTitleFile.exists()) {
