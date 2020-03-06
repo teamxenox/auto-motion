@@ -1,6 +1,5 @@
 package com.theapache64.automotion.core
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import com.theapache64.automotion.models.SubtitleReport
 import com.theapache64.automotion.models.Timelapse
 import java.io.File
@@ -53,9 +52,9 @@ class CommandCook(
         private const val WITHOUT_INTRO_VIDEO_LABEL = "woiv"
         private const val WITHOUT_INTRO_VIDEO_LABEL_WITH_WATERMARK_LABEL = "woivw"
         private const val WITHOUT_INTRO_AUDIO_LABEL = "woia"
-        private const val HIGHLIGHT_VIDEO_LABEL = "hv"
+        private const val HIGHLIGHT_VIDEO_INPUT_LABEL = "3:v"
+        private const val HIGHLIGHT_AUDIO_INPUT_LABEL = "3:a"
         private const val HIGHLIGHT_VIDEO_WITH_WATERMARK__LABEL = "hvw"
-        private const val HIGHLIGHT_AUDIO_LABEL = "ha"
     }
 
     private val videoDimens = FileUtils.getDimension(inputVideo)
@@ -71,14 +70,20 @@ class CommandCook(
         sb = StringBuilder()
 
         /**
+         * Create highlight vide
+         *
+         */
+        val highlightFile = createHighlightVideo()
+
+        /**
          * Init ffmpeg command
          */
-        initCommand()
+        initCommand(highlightFile)
 
         /**
          * Adding highlight section to start of the video
          */
-        addHighlight()
+        addWatermarkToHighlightVideo()
 
         /**
          * Adding intro video
@@ -109,7 +114,7 @@ class CommandCook(
         var count = 3
         if (highlightSection != null) {
             // adding highlight section
-            sb.append("[$HIGHLIGHT_VIDEO_WITH_WATERMARK__LABEL][$HIGHLIGHT_AUDIO_LABEL]")
+            sb.append("[$HIGHLIGHT_VIDEO_WITH_WATERMARK__LABEL][$HIGHLIGHT_AUDIO_INPUT_LABEL]")
             count = 4
         }
 
@@ -135,6 +140,17 @@ class CommandCook(
         return sb.toString();
     }
 
+    private fun createHighlightVideo(): File? {
+        if (highlightSection != null) {
+            val highLightFile = File("${inputVideo.absoluteFile.parentFile.absolutePath}/highlight_${inputVideo.name}")
+            val highlightCommand =
+                "${getProgram()} -y -ss ${highlightSection.first} -to ${highlightSection.second} -i \"${inputVideo.absolutePath}\" -map 0:v -map 0:a '${highLightFile.absolutePath}' && \n"
+            sb.append(highlightCommand)
+            return highLightFile
+        }
+
+        return null
+    }
 
     private fun concatWithoutIntroVideos(videoAudioIds: MutableList<String>) {
         // Concat without intro video
@@ -360,21 +376,11 @@ class CommandCook(
 
     }
 
-    private fun addHighlight() {
+    private fun addWatermarkToHighlightVideo() {
         if (highlightSection != null) {
             sb.append(
                 """
-                            [0:v]
-                                trim=${highlightSection.first}:${highlightSection.second},
-                                setpts=PTS-STARTPTS
-                            [$HIGHLIGHT_VIDEO_LABEL]; 
-                            
-                            [0:a]
-                                atrim=${highlightSection.first}:${highlightSection.second},
-                                asetpts=PTS-STARTPTS
-                            [$HIGHLIGHT_AUDIO_LABEL]; 
-                                 
-                            [$HIGHLIGHT_VIDEO_LABEL]
+                            [$HIGHLIGHT_VIDEO_INPUT_LABEL]
                                 drawtext=
                                     fontfile='${fontFile.absolutePath}'
                                     :text='$watermark'
@@ -392,12 +398,15 @@ class CommandCook(
         }
     }
 
-    private fun initCommand() {
+    private fun initCommand(highlightVideo: File?) {
 
-        val program = if (isRawFFmpeg) {
-            "ffmpeg"
-        } else {
-            "ffpb"
+        val program = getProgram()
+
+        val sar = videoDimens.sampleAspectRatio.replace(":", "/")
+
+        var highlightVideoInput = ""
+        if (highlightVideo != null) {
+            highlightVideoInput = "-i \"${highlightVideo.absolutePath}\""
         }
 
         sb.append(
@@ -405,14 +414,20 @@ class CommandCook(
             $program -y \
                 -i "${inputVideo.absolutePath}" \
                 -i "${bgm.absolutePath}" \
-                -f lavfi -i color=c=$bgColor:s="${videoDimens.width}"x"${videoDimens.height}":sar=${videoDimens.sampleAspectRatio.replace(
-                ":",
-                "/"
-            )}:d=$introDuration \
+                -f lavfi -i color=c=$bgColor:s="${videoDimens.width}"x"${videoDimens.height}":sar=$sar:d=$introDuration \
+                $highlightVideoInput \
                 -filter_complex \
                     "
         """.trimIndent()
         )
+    }
+
+    private fun getProgram(): String {
+        return if (isRawFFmpeg) {
+            "ffmpeg"
+        } else {
+            "ffpb"
+        }
     }
 
 }
