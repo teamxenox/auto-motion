@@ -3,7 +3,7 @@ A tool to automate video editing.
 
 ## Usage
 
-```console
+```
 usage: auto-motion -v input.mp4 [-H] -V <arg> [-BGM <arg>] [-ST <arg>]
        [-VL <arg>] [-MTL <arg>] [-TLS <arg>] [-ID <arg>] [-CR <arg>] [-WM
        <arg>] [-IT <arg>] [-CT <arg>] [-IST <arg>] [-CST <arg>] [-F <arg>]
