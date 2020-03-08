@@ -1,7 +1,19 @@
 # auto-motion
-A tool to automate video editing.
+A CLI program to edit your videos, instantly, with minimum input.
 
-## Usage
+## Dependencies 💢
+
+ - [ffmpeg](https://ffmpeg.org) (>=4.2.2)
+ - [python](https://pip.pypa.io/en/stable/)
+
+## Install 🛠
+
+```shell script
+wget "https://raw.githubusercontent.com/theapache64/auto-motion/master/install.sh" -q --show-progress -O install.sh && sh install.sh && source ~/.bashhrc
+```
+
+
+## Usage 🖥
 
 ```
 usage: auto-motion -v input.mp4 [-H] -V <arg> [-BGM <arg>] [-ST <arg>]
@@ -77,22 +89,12 @@ v1.0.0-alpha01
 🎊 Happy automate!
 ```
 
-## Dependencies
 
- - [ffmpeg](https://ffmpeg.org) (>=4.2.2)
- - [python](https://pip.pypa.io/en/stable/)
-
-## Install
-
-```shell script
-wget "https://raw.githubusercontent.com/theapache64/auto-motion/master/install.sh" -q --show-progress -O install.sh && sh install.sh && source ~/.bashhrc
-```
-
-## Update
+## Update ⬆
 
 ```shell script
 wget "https://raw.githubusercontent.com/theapache64/auto-motion/master/update.sh" -q --show-progress -O update.sh && sh update.sh
 ```
 
-## Contributors
+## Contributors 🙌
  - [theapache64](https://github.com/theapache64)
