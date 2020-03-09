@@ -1,6 +1,5 @@
 package com.theapache64.automotion.core
 
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.theapache64.automotion.core.srtparser.SrtParser
 import com.theapache64.automotion.models.AutoSubNode
@@ -25,7 +24,7 @@ object AutoSubUtils {
     ): List<AutoSubNode> {
 
         val command =
-            "autosub --format json --src-language $videoLanguage --dst-language $videoLanguage \"${videoFile.absolutePath}\""
+            "autosub --src-language $videoLanguage --dst-language $videoLanguage \"${videoFile.absolutePath}\""
 
         val autoSubOutput = ComplexCommandExecutor.executeCommand(
             command,
@@ -39,10 +38,7 @@ object AutoSubUtils {
 
         val jsonSubFile = parseFile(autoSubOutput)
         require(jsonSubFile.exists()) { "JSON subtitle file doesn't exist ${jsonSubFile.absolutePath}" }
-        val videoDuration = FileUtils.getDuration(videoFile)
-        val parsedData = parseJson(jsonSubFile, videoDuration)
-        jsonSubFile.delete()
-        return parsedData
+        return getSubFromSrt(jsonSubFile)
     }
 
     /**

@@ -70,7 +70,7 @@ object Main {
                             true
                         ).toLowerCase() == "y"
 
-                        if (isProceedWithDefault) {
+                        if (!isProceedWithDefault) {
                             defaultSrt = null
                         }
                     }
