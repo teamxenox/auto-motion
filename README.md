@@ -9,7 +9,7 @@ A CLI program to edit your videos, instantly, with minimum input.
 ## Install 🛠
 
 ```shell script
-wget "https://raw.githubusercontent.com/theapache64/auto-motion/master/install.sh" -q --show-progress -O install.sh && sh install.sh && source ~/.bashhrc
+wget "https://raw.githubusercontent.com/theapache64/auto-motion/master/install.sh" -q --show-progress -O install.sh && sh install.sh && source ~/.bashrc
 ```
 
 
