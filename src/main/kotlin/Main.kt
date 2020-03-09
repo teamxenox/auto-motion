@@ -11,7 +11,7 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        println("😇 Initializing auto-motion ...")
+
 
         // Checking if all necessary dependencies are available
         if (isAllDepsAvailable()) {
@@ -21,6 +21,8 @@ object Main {
                 if (cp.isPrintHelp()) {
                     cp.printHelp()
                 } else {
+
+                    println("😇 Initializing auto-motion ...")
 
                     // Reading input from console
                     val inputVideos = cp.getInputVideos()
