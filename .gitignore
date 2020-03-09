@@ -147,4 +147,3 @@ lab/*.json
 !lab/command.sh
 !lab/lion.json
 !lab/test_timelapse_target_start_end.json
-!auto-motion.main.jar
