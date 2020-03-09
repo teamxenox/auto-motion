@@ -3,6 +3,7 @@ A CLI program to edit your videos, instantly, with minimum input.
 
 ## Dependencies 💢
 
+ - java
  - [ffmpeg](https://ffmpeg.org) (>=4.2.2)
  - [python](https://pip.pypa.io/en/stable/)
 
@@ -90,7 +91,7 @@ v1.0.0-alpha01
 ```
 
 
-## Update ⬆
+## Update ⤴️
 
 ```shell script
 wget "https://raw.githubusercontent.com/theapache64/auto-motion/master/update.sh" -q --show-progress -O update.sh && sh update.sh
