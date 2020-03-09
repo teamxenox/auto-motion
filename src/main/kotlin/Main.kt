@@ -11,6 +11,8 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
 
+        println("😇 Initializing auto-motion ...")
+
         // Checking if all necessary dependencies are available
         if (isAllDepsAvailable()) {
             try {
@@ -201,7 +203,7 @@ object Main {
                         isClearAfterFinish = true
                     )
                     println("✔️ Commands executed")
-                    println("\uD83C\uDF89 File saved to file://${commandCook.outputFileName}")
+                    println("\uD83C\uDF89 File saved to file://${commandCook.outputFileName.replace(" ", "%20")}")
                     if (!isKeepSh) {
                         commandSh.delete()
                     }
