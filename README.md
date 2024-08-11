@@ -1,4 +1,4 @@
-# auto-motion
+# auto-motion (legacy)
 A CLI program to edit your videos, instantly, with minimum input.
 
 ## Dependencies 💢
